@@ -31,8 +31,11 @@
   </modules>
 
   <properties>
+    <!-- Configuration -->
     <io7m.api.previousVersion>2.0.0</io7m.api.previousVersion>
     <io7m.java.targetJavaVersion>21</io7m.java.targetJavaVersion>
+
+    <!-- Third-party dependencies. -->
     <com.io7m.junit.version>5.10.1</com.io7m.junit.version>
   </properties>
 
@@ -44,9 +47,9 @@
   </licenses>
 
   <scm>
-    <url>https://github.com/io7m/jbssio</url>
-    <connection>scm:git:https://github.com/io7m/jbssio</connection>
-    <developerConnection>scm:git:https://github.com/io7m/jbssio</developerConnection>
+    <url>https://www.github.com/io7m-com/jbssio</url>
+    <connection>scm:git:https://www.github.com/io7m-com/jbssio</connection>
+    <developerConnection>scm:git:https://www.github.com/io7m-com/jbssio</developerConnection>
   </scm>
 
   <developers>
@@ -59,7 +62,7 @@
   </developers>
 
   <issueManagement>
-    <url>https://github.com/io7m/jbssio/issues</url>
+    <url>https://www.github.com/io7m-com/jbssio/issues</url>
     <system>GitHub Issues</system>
   </issueManagement>
 
@@ -81,7 +84,7 @@
 
   <ciManagement>
     <system>GitHub Actions</system>
-    <url>https://github.com/jbssio/actions</url>
+    <url>https://www.github.com/io7m-com/jbssio/actions</url>
   </ciManagement>
 
   <dependencyManagement>
