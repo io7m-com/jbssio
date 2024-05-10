@@ -15,12 +15,29 @@
         </c:change>
       </c:changes>
     </c:release>
+    <c:release date="2020-11-25T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="1.0.2">
+      <c:changes>
+        <c:change date="2020-11-25T00:00:00+00:00" summary="Correctly use slashes in paths (again!)">
+          <c:tickets>
+            <c:ticket id="1"/>
+          </c:tickets>
+        </c:change>
+      </c:changes>
+    </c:release>
     <c:release date="2020-12-24T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="1.1.0">
       <c:changes>
         <c:change date="2020-12-24T00:00:00+00:00" summary="Add reader/writer implementations that throw UnsupportedOperationException"/>
       </c:changes>
     </c:release>
-    <c:release date="2023-04-02T11:30:36+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="2.0.0">
+    <c:release date="2022-04-09T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="1.1.1">
+      <c:changes>
+        <c:change date="2022-04-09T00:00:00+00:00" summary="Update ieee754b16"/>
+        <c:change date="2022-04-09T00:00:00+00:00" summary="Update OSGi bundle annotations"/>
+        <c:change date="2022-04-09T00:00:00+00:00" summary="Update Logback"/>
+        <c:change date="2022-04-09T00:00:00+00:00" summary="Update commons-io"/>
+      </c:changes>
+    </c:release>
+    <c:release date="2023-04-02T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="2.0.0">
       <c:changes>
         <c:change date="2023-04-02T00:00:00+00:00" summary="Updated dependencies."/>
         <c:change date="2023-04-02T00:00:00+00:00" summary="Added bounded extensions.">
@@ -35,25 +52,17 @@
         </c:change>
       </c:changes>
     </c:release>
-    <c:release date="2020-11-25T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="1.0.2">
+    <c:release date="2024-05-10T16:40:28+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="2.1.0">
       <c:changes>
-        <c:change date="2020-11-25T00:00:00+00:00" summary="Correctly use slashes in paths (again!)">
-          <c:tickets>
-            <c:ticket id="1"/>
-          </c:tickets>
-        </c:change>
-      </c:changes>
-    </c:release>
-    <c:release date="2022-04-09T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="1.1.1">
-      <c:changes>
-        <c:change date="2022-04-09T00:00:00+00:00" summary="Update ieee754b16"/>
-        <c:change date="2022-04-09T00:00:00+00:00" summary="Update OSGi bundle annotations"/>
-        <c:change date="2022-04-09T00:00:00+00:00" summary="Update Logback"/>
-        <c:change date="2022-04-09T00:00:00+00:00" summary="Update commons-io"/>
+        <c:change date="2024-04-19T00:00:00+00:00" summary="Update org.slf4j:slf4j-api:2.0.10 → 2.0.13."/>
+        <c:change date="2024-04-19T00:00:00+00:00" summary="Update ch.qos.logback:logback-classic:1.4.14 → 1.5.6."/>
+        <c:change date="2024-04-19T00:00:00+00:00" summary="Update commons-io:commons-io:2.15.1 → 2.16.1."/>
+        <c:change date="2024-04-29T00:00:00+00:00" summary="Update com.io7m.junit.version:5.10.1 → 5.10.2."/>
+        <c:change date="2024-05-09T00:00:00+00:00" summary="Update com.io7m.ieee754b16:com.io7m.ieee754b16.core:3.0.0 → 3.0.1."/>
       </c:changes>
     </c:release>
   </c:releases>
   <c:ticket-systems>
-    <c:ticket-system default="true" id="com.github.io7m.jbssio" url="https://www.github.com/io7m/jbssio/issues/"/>
+    <c:ticket-system default="true" id="com.github.io7m.jbssio" url="https://www.github.com/io7m-com/jbssio/issues/"/>
   </c:ticket-systems>
 </c:changelog>

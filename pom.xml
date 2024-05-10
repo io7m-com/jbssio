@@ -9,12 +9,12 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.full</artifactId>
-    <version>7.5.0</version>
+    <version>8.2.0</version>
   </parent>
 
   <groupId>com.io7m.jbssio</groupId>
   <artifactId>com.io7m.jbssio</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
   <packaging>pom</packaging>
 
   <name>com.io7m.jbssio</name>
@@ -31,21 +31,25 @@
   </modules>
 
   <properties>
+    <!-- Configuration -->
     <io7m.api.previousVersion>2.0.0</io7m.api.previousVersion>
-    <com.io7m.junit.version>5.9.2</com.io7m.junit.version>
+    <io7m.java.targetJavaVersion>17</io7m.java.targetJavaVersion>
+
+    <!-- Third-party dependencies. -->
+    <com.io7m.junit.version>5.10.2</com.io7m.junit.version>
   </properties>
 
   <licenses>
     <license>
-      <name>ISC License</name>
+      <name>ISC</name>
       <url>https://www.io7m.com/license/isc.txt</url>
     </license>
   </licenses>
 
   <scm>
-    <url>https://github.com/io7m/jbssio</url>
-    <connection>scm:git:https://github.com/io7m/jbssio</connection>
-    <developerConnection>scm:git:https://github.com/io7m/jbssio</developerConnection>
+    <url>https://www.github.com/io7m-com/jbssio</url>
+    <connection>scm:git:https://www.github.com/io7m-com/jbssio</connection>
+    <developerConnection>scm:git:https://www.github.com/io7m-com/jbssio</developerConnection>
   </scm>
 
   <developers>
@@ -58,7 +62,7 @@
   </developers>
 
   <issueManagement>
-    <url>https://github.com/io7m/jbssio/issues</url>
+    <url>https://www.github.com/io7m-com/jbssio/issues</url>
     <system>GitHub Issues</system>
   </issueManagement>
 
@@ -80,7 +84,7 @@
 
   <ciManagement>
     <system>GitHub Actions</system>
-    <url>https://github.com/jbssio/actions</url>
+    <url>https://www.github.com/io7m-com/jbssio/actions</url>
   </ciManagement>
 
   <dependencyManagement>
@@ -88,17 +92,17 @@
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.11.0</version>
+        <version>2.16.1</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>2.0.7</version>
+        <version>2.0.13</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.4.6</version>
+        <version>1.5.6</version>
       </dependency>
       <dependency>
         <groupId>org.osgi</groupId>
@@ -118,7 +122,7 @@
       <dependency>
         <groupId>com.io7m.ieee754b16</groupId>
         <artifactId>com.io7m.ieee754b16.core</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
       </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
