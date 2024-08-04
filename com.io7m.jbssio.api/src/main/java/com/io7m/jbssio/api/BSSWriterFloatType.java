@@ -17,8 +17,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions for writing floating-point values.
@@ -34,15 +34,15 @@ public interface BSSWriterFloatType
    * @param name The name of the value
    * @param b    The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF16BE(
     String name,
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 16-bit big-endian floating-point value.
@@ -51,14 +51,14 @@ public interface BSSWriterFloatType
    *
    * @param b The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF16BE(
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 16-bit little-endian floating-point value.
@@ -68,15 +68,15 @@ public interface BSSWriterFloatType
    * @param name The name of the value
    * @param b    The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF16LE(
     String name,
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 16-bit little-endian floating-point value.
@@ -85,14 +85,14 @@ public interface BSSWriterFloatType
    *
    * @param b The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF16LE(
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 32-bit big-endian floating-point value.
@@ -102,15 +102,15 @@ public interface BSSWriterFloatType
    * @param name The name of the value
    * @param b    The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF32BE(
     String name,
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 32-bit big-endian floating-point value.
@@ -119,14 +119,14 @@ public interface BSSWriterFloatType
    *
    * @param b The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF32BE(
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 32-bit little-endian floating-point value.
@@ -136,15 +136,15 @@ public interface BSSWriterFloatType
    * @param name The name of the value
    * @param b    The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF32LE(
     String name,
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 32-bit little-endian floating-point value.
@@ -153,14 +153,14 @@ public interface BSSWriterFloatType
    *
    * @param b The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF32LE(
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 64-bit big-endian floating-point value.
@@ -170,15 +170,15 @@ public interface BSSWriterFloatType
    * @param name The name of the value
    * @param b    The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF64BE(
     String name,
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 64-bit big-endian floating-point value.
@@ -187,14 +187,14 @@ public interface BSSWriterFloatType
    *
    * @param b The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF64BE(
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 64-bit little-endian floating-point value.
@@ -204,15 +204,15 @@ public interface BSSWriterFloatType
    * @param name The name of the value
    * @param b    The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF64LE(
     String name,
     double b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 64-bit little-endian floating-point value.
@@ -221,12 +221,12 @@ public interface BSSWriterFloatType
    *
    * @param b The value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeF64LE(
     double b)
-    throws IOException;
+    throws SIOException;
 }

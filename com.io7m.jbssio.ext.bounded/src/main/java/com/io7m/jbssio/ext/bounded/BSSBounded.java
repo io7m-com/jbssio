@@ -21,12 +21,14 @@ import com.io7m.jbssio.api.BSSReaderIntegerUnsignedType;
 import com.io7m.jbssio.api.BSSReaderType;
 import com.io7m.jbssio.api.BSSWriterIntegerUnsignedType;
 import com.io7m.jbssio.api.BSSWriterType;
+import com.io7m.seltzer.io.SIOException;
 
 import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static java.lang.Integer.toUnsignedLong;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -172,10 +174,27 @@ public final class BSSBounded
     final BSSReaderType reader,
     final int limit,
     final String name)
-    throws IOException
+    throws SIOException
   {
-    final var size =
-      this.readU32(reader, name + "Length");
+    final long size;
+    try {
+      size = this.readU32(reader, name + "Length");
+    } catch (final IOException e) {
+      throw reader.createException(
+        "Failed to read stream.",
+        e,
+        Map.of(),
+        (message, cause, attributes) -> {
+          return new SIOException(
+            message,
+            cause.orElseThrow(),
+            "error-io",
+            attributes,
+            Optional.empty()
+          );
+        }
+      );
+    }
 
     final var longLimit = toUnsignedLong(limit);
     if (Long.compareUnsigned(size, longLimit) > 0) {
@@ -186,7 +205,14 @@ public final class BSSBounded
           Long.toUnsignedString(longLimit)
         ),
         Map.of(),
-        IOException::new
+        (message, cause, attributes) -> {
+          return new SIOException(
+            message,
+            "error-out-of-range",
+            attributes,
+            Optional.empty()
+          );
+        }
       );
     }
 

@@ -17,8 +17,9 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
+
 import java.util.OptionalLong;
 
 /**
@@ -34,13 +35,13 @@ public interface BSSSkippableType
    *
    * @param size The number of bytes to skip
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek beyond the observer's
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek beyond the observer's
    *                      limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void skip(long size)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Skip enough bytes to align the observer position to a multiple of {@code size}. If the observer
@@ -50,20 +51,20 @@ public interface BSSSkippableType
    *
    * @param size The number of bytes to skip
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek beyond the observer's
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek beyond the observer's
    *                      limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void align(int size)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * @return The number of bytes remaining, if a limit is actually known or specified
    *
-   * @throws IOException On I/O errors (fetching the bounds of an underlying data source/sink may require I/O)
+   * @throws SIOException On I/O errors (fetching the bounds of an underlying data source/sink may require I/O)
    */
 
   OptionalLong bytesRemaining()
-    throws IOException;
+    throws SIOException;
 }

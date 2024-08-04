@@ -18,8 +18,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions for reading signed integers.
@@ -34,13 +34,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readS8()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 16-bit signed, little-endian integer.
@@ -49,13 +49,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readS16LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 32-bit signed, little-endian integer.
@@ -64,13 +64,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS32LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit signed, little-endian integer.
@@ -79,13 +79,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS64LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 16-bit signed, big-endian integer.
@@ -94,13 +94,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readS16BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 32-bit signed, big-endian integer.
@@ -109,13 +109,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS32BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit signed, big-endian integer.
@@ -124,13 +124,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS64BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 8-bit signed integer.
@@ -141,13 +141,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readS8(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 16-bit signed, little-endian integer.
@@ -158,13 +158,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readS16LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 32-bit signed, little-endian integer.
@@ -175,13 +175,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS32LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit signed, little-endian integer.
@@ -192,13 +192,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS64LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 16-bit signed, big-endian integer.
@@ -209,13 +209,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readS16BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 32-bit signed, big-endian integer.
@@ -226,13 +226,13 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS32BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit signed, big-endian integer.
@@ -243,11 +243,11 @@ public interface BSSReaderIntegerSignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readS64BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 }

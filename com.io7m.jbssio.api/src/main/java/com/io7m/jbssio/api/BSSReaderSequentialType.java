@@ -16,7 +16,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+import com.io7m.seltzer.io.SIOException;
+
 import java.util.Optional;
 
 /**
@@ -35,12 +36,12 @@ public interface BSSReaderSequentialType extends BSSReaderType
    *
    * @return A new sub reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderSequentialType createSubReader(
     String name)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new sub reader with the given {@code name}, allowing the new
@@ -51,11 +52,11 @@ public interface BSSReaderSequentialType extends BSSReaderType
    *
    * @return A new sub reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderSequentialType createSubReaderBounded(
     String name,
     long size)
-    throws IOException;
+    throws SIOException;
 }

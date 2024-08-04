@@ -18,7 +18,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions for writing signed integers.
@@ -33,12 +34,12 @@ public interface BSSWriterIntegerSignedType
    *
    * @param b The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS8(int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 8-bit signed integer.
@@ -48,14 +49,14 @@ public interface BSSWriterIntegerSignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS8(
     String name,
     int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 16-bit little-endian signed integer.
@@ -64,12 +65,12 @@ public interface BSSWriterIntegerSignedType
    *
    * @param b The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS16LE(int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 16-bit big-endian signed integer.
@@ -78,12 +79,12 @@ public interface BSSWriterIntegerSignedType
    *
    * @param b The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS16BE(int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 16-bit little-endian signed integer.
@@ -93,14 +94,14 @@ public interface BSSWriterIntegerSignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS16LE(
     String name,
     int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 16-bit big-endian signed integer.
@@ -110,14 +111,14 @@ public interface BSSWriterIntegerSignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS16BE(
     String name,
     int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 32-bit little-endian signed integer.
@@ -126,12 +127,12 @@ public interface BSSWriterIntegerSignedType
    *
    * @param b The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS32LE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 32-bit big-endian signed integer.
@@ -140,12 +141,12 @@ public interface BSSWriterIntegerSignedType
    *
    * @param b The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS32BE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 32-bit little-endian signed integer.
@@ -155,14 +156,14 @@ public interface BSSWriterIntegerSignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS32LE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 32-bit big-endian signed integer.
@@ -172,14 +173,14 @@ public interface BSSWriterIntegerSignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS32BE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 64-bit little-endian signed integer.
@@ -188,12 +189,12 @@ public interface BSSWriterIntegerSignedType
    *
    * @param b The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS64LE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 64-bit big-endian signed integer.
@@ -202,12 +203,12 @@ public interface BSSWriterIntegerSignedType
    *
    * @param b The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS64BE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 64-bit little-endian signed integer.
@@ -217,14 +218,14 @@ public interface BSSWriterIntegerSignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS64LE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 64-bit big-endian signed integer.
@@ -234,12 +235,12 @@ public interface BSSWriterIntegerSignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or write beyond the
    *                     writer's limit
    */
 
   void writeS64BE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 }

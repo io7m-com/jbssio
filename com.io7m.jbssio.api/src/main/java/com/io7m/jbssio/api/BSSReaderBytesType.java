@@ -18,8 +18,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions to read bytes.
@@ -36,14 +36,14 @@ public interface BSSReaderBytesType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   default int readBytes(
     final byte[] buffer)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     return this.readBytes(buffer, 0, buffer.length);
   }
@@ -59,16 +59,16 @@ public interface BSSReaderBytesType
    *
    * @return The number of bytes read
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readBytes(
     byte[] buffer,
     int offset,
     int length)
-    throws IOException, EOFException;
+    throws SIOException;
 
   /**
    * Read bytes.
@@ -80,15 +80,15 @@ public interface BSSReaderBytesType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   default int readBytes(
     final String name,
     final byte[] buffer)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     return this.readBytes(name, buffer, 0, buffer.length);
   }
@@ -105,9 +105,9 @@ public interface BSSReaderBytesType
    *
    * @return The number of bytes read
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readBytes(
@@ -115,5 +115,5 @@ public interface BSSReaderBytesType
     byte[] buffer,
     int offset,
     int length)
-    throws IOException, EOFException;
+    throws SIOException;
 }

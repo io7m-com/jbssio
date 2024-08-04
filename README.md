@@ -57,10 +57,11 @@ Bounds, combined with nesting, allow for very easy-to-understand code
 when parsing complex binary structures. Individual _readers_ and
 _writers_ are assigned names as they are created, and these names are
 appended together during nesting to construct detailed diagnostic messages
-when errors occur. For example:
+when errors occur. All exceptions raised by the API are
+[structured errors](https://www.io7m.com/software/seltzer/):
 
 ```
-java.io.IOException: Out of bounds.
+com.io7m.seltzer.io.SIOException: Out of bounds.
   Reader URI: file://tmp/example.data
   Reader path: header/info:size
   Reader bounds: absolute [0x0, 0x10)
@@ -68,7 +69,7 @@ java.io.IOException: Out of bounds.
   Offset: absolute 0x0
 ```
 
-The above message clearly indicates that the code that was attempting
+The above error clearly indicates that the code that was attempting
 to read the `size` field, of the `info` member of the
 `header` structure, ended up trying to read more data than the
 _reader_ was configured to allow: The _reader_ was specified

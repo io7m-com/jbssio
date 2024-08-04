@@ -16,12 +16,13 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
+
 import java.net.URI;
 import java.util.Map;
 import java.util.OptionalLong;
-import java.util.function.Function;
 
 /**
  * A writer that throws {@link UnsupportedOperationException} for all write operations.
@@ -73,21 +74,21 @@ public final class BSSWriterRandomAccessUnsupported
 
   @Override
   public void skip(final long size)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void align(final int size)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public OptionalLong bytesRemaining()
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
@@ -96,7 +97,7 @@ public final class BSSWriterRandomAccessUnsupported
   public void writeBytes(
     final String name,
     final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
@@ -107,14 +108,14 @@ public final class BSSWriterRandomAccessUnsupported
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void writeBytes(final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
@@ -124,7 +125,7 @@ public final class BSSWriterRandomAccessUnsupported
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
@@ -263,7 +264,7 @@ public final class BSSWriterRandomAccessUnsupported
 
   @Override
   public void writeS32BE(final long b)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
@@ -280,7 +281,7 @@ public final class BSSWriterRandomAccessUnsupported
   public void writeS32BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
@@ -415,7 +416,7 @@ public final class BSSWriterRandomAccessUnsupported
   public BSSWriterRandomAccessType createSubWriterAt(
     final String name,
     final long offset)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
@@ -425,14 +426,14 @@ public final class BSSWriterRandomAccessUnsupported
     final String name,
     final long offset,
     final long size)
-    throws IOException
+    throws SIOException
   {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void close()
-    throws IOException
+    throws SIOException
   {
 
   }
@@ -444,10 +445,20 @@ public final class BSSWriterRandomAccessUnsupported
   }
 
   @Override
-  public <E extends Exception> E createException(
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
     final String message,
     final Map<String, String> attributes,
-    final Function<String, E> constructor)
+    final BSSExceptionConstructorType<E> constructor)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
+    final String message,
+    final Throwable cause,
+    final Map<String, String> attributes,
+    final BSSExceptionConstructorType<E> constructor)
   {
     throw new UnsupportedOperationException();
   }

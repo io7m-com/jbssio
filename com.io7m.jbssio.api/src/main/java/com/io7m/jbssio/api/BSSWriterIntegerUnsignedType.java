@@ -18,8 +18,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions for writing unsigned integers.
@@ -34,13 +34,13 @@ public interface BSSWriterIntegerUnsignedType
    *
    * @param b The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU8(int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 8-bit unsigned integer.
@@ -50,15 +50,15 @@ public interface BSSWriterIntegerUnsignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU8(
     String name,
     int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 16-bit little-endian unsigned integer.
@@ -67,13 +67,13 @@ public interface BSSWriterIntegerUnsignedType
    *
    * @param b The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU16LE(int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 16-bit big-endian unsigned integer.
@@ -82,13 +82,13 @@ public interface BSSWriterIntegerUnsignedType
    *
    * @param b The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU16BE(int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 16-bit little-endian unsigned integer.
@@ -98,15 +98,15 @@ public interface BSSWriterIntegerUnsignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU16LE(
     String name,
     int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 16-bit big-endian unsigned integer.
@@ -116,15 +116,15 @@ public interface BSSWriterIntegerUnsignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU16BE(
     String name,
     int b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 32-bit little-endian unsigned integer.
@@ -133,13 +133,13 @@ public interface BSSWriterIntegerUnsignedType
    *
    * @param b The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU32LE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 32-bit big-endian unsigned integer.
@@ -148,13 +148,13 @@ public interface BSSWriterIntegerUnsignedType
    *
    * @param b The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU32BE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 32-bit little-endian unsigned integer.
@@ -164,15 +164,15 @@ public interface BSSWriterIntegerUnsignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU32LE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 32-bit big-endian unsigned integer.
@@ -182,15 +182,15 @@ public interface BSSWriterIntegerUnsignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU32BE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 64-bit little-endian unsigned integer.
@@ -199,13 +199,13 @@ public interface BSSWriterIntegerUnsignedType
    *
    * @param b The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU64LE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a 64-bit big-endian unsigned integer.
@@ -214,13 +214,13 @@ public interface BSSWriterIntegerUnsignedType
    *
    * @param b The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU64BE(long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 64-bit little-endian unsigned integer.
@@ -230,15 +230,15 @@ public interface BSSWriterIntegerUnsignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU64LE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write a named 64-bit big-endian unsigned integer.
@@ -248,13 +248,13 @@ public interface BSSWriterIntegerUnsignedType
    * @param name The name of the value
    * @param b    The integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeU64BE(
     String name,
     long b)
-    throws IOException;
+    throws SIOException;
 }

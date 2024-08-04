@@ -18,14 +18,14 @@
 package com.io7m.jbssio.vanilla.internal;
 
 import com.io7m.jbssio.api.BSSAddressableType;
+import com.io7m.jbssio.api.BSSExceptionConstructorType;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.Optional;
 
 final class BSSExceptions
 {
@@ -34,38 +34,12 @@ final class BSSExceptions
 
   }
 
-  public static <E extends Exception> E create(
-    final String message,
-    final Map<String, String> attributes,
-    final Function<String, E> constructor)
-  {
-    final var separator = System.lineSeparator();
-    final var builder = new StringBuilder(128);
-    builder.append(message);
-    builder.append(separator);
-
-    final var entries = new ArrayList<>(attributes.entrySet());
-    entries.sort(Comparator.comparing(Map.Entry::getKey));
-
-    var longest = 0;
-    for (final var entry : entries) {
-      longest = Math.max(longest, entry.getKey().length());
-    }
-
-    final var format = "%-" + longest + "s : %s";
-    for (final var entry : entries) {
-      builder.append(String.format(format, entry.getKey(), entry.getValue()));
-      builder.append(separator);
-    }
-
-    return constructor.apply(builder.toString());
-  }
-
-  public static <E extends Exception> E create(
+  public static <E extends Exception & SStructuredErrorType<String>> E create(
     final BSSAddressableType source,
+    final Optional<Throwable> cause,
     final String message,
     final Map<String, String> attributes,
-    final Function<String, E> constructor)
+    final BSSExceptionConstructorType<E> constructor)
   {
     final var baseAttributes = new HashMap<String, String>(4 + attributes.size());
     baseAttributes.put("URI", source.uri().toString());
@@ -77,22 +51,78 @@ final class BSSExceptions
       "Offset (Absolute)",
       "0x" + Long.toUnsignedString(source.offsetCurrentAbsolute(), 16));
     baseAttributes.putAll(attributes);
-    return create(message, baseAttributes, constructor);
+
+    return constructor.create(
+      message,
+      cause,
+      Map.copyOf(baseAttributes)
+    );
   }
 
-  public static IOException createIO(
+  public static SIOException wrap(
+    final BSSAddressableType source,
+    final Exception cause,
+    final String message,
+    final Map<String, String> attributes)
+  {
+    final var baseAttributes =
+      new HashMap<String, String>(4 + attributes.size());
+
+    baseAttributes.put("URI", source.uri().toString());
+    baseAttributes.put("Path", source.path());
+    baseAttributes.put(
+      "Offset (Relative)",
+      "0x" + Long.toUnsignedString(source.offsetCurrentRelative(), 16));
+    baseAttributes.put(
+      "Offset (Absolute)",
+      "0x" + Long.toUnsignedString(source.offsetCurrentAbsolute(), 16));
+    baseAttributes.putAll(attributes);
+
+    return new SIOException(
+      message,
+      cause,
+      "error-io",
+      attributes
+    );
+  }
+
+  public static SIOException createIO(
     final BSSAddressableType source,
     final String message,
     final Map<String, String> attributes)
   {
-    return create(source, message, attributes, IOException::new);
+    return create(source, Optional.empty(), message, attributes, (msg, cause, attr) -> {
+      return new SIOException(
+        msg,
+        "error-io",
+        attr,
+        Optional.empty()
+      );
+    });
   }
 
-  public static EOFException createEOF(
+  public static SEOFException createEOF(
     final BSSAddressableType source,
     final String message,
     final Map<String, String> attributes)
   {
-    return create(source, message, attributes, EOFException::new);
+    return create(source, Optional.empty(), message, attributes, (msg, cause, attr) -> {
+      return new SEOFException(
+        msg,
+        "error-eof",
+        attr,
+        Optional.empty()
+      );
+    });
+  }
+
+  public static <E extends Exception & SStructuredErrorType<String>> E create(
+    final BSSAddressableType source,
+    final String message,
+    final Throwable cause,
+    final Map<String, String> attributes,
+    final BSSExceptionConstructorType<E> constructor)
+  {
+    return create(source, Optional.of(cause), message, attributes, constructor);
   }
 }

@@ -17,13 +17,19 @@
 package com.io7m.jbssio.vanilla.internal;
 
 import com.io7m.ieee754b16.Binary16;
+import com.io7m.jbssio.api.BSSExceptionConstructorType;
 import com.io7m.jbssio.api.BSSWriterRandomAccessType;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SClosedChannelException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
-import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.concurrent.Callable;
 
@@ -98,7 +104,7 @@ public final class BSSWriterByteBuffer
   public BSSWriterRandomAccessType createSubWriterAt(
     final String inName,
     final long offset)
-    throws IOException
+    throws SEOFException, SClosedChannelException
   {
     Objects.requireNonNull(inName, "path");
 
@@ -125,7 +131,7 @@ public final class BSSWriterByteBuffer
     final String inName,
     final long offset,
     final long size)
-    throws IOException
+    throws SEOFException, SClosedChannelException
   {
     Objects.requireNonNull(inName, "path");
 
@@ -162,7 +168,7 @@ public final class BSSWriterByteBuffer
   private void writeS8p(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 1L);
@@ -176,7 +182,7 @@ public final class BSSWriterByteBuffer
   private void writeU8p(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 1L);
@@ -189,14 +195,14 @@ public final class BSSWriterByteBuffer
 
   @Override
   public void writeS8(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS8p(null, b);
   }
 
   @Override
   public void writeU8(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU8p(null, b);
   }
@@ -205,7 +211,7 @@ public final class BSSWriterByteBuffer
   public void writeS8(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS8p(Objects.requireNonNull(name, "name"), b);
   }
@@ -214,7 +220,7 @@ public final class BSSWriterByteBuffer
   public void writeU8(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU8p(Objects.requireNonNull(name, "name"), b);
   }
@@ -222,7 +228,7 @@ public final class BSSWriterByteBuffer
   private void writeS16LEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -237,7 +243,7 @@ public final class BSSWriterByteBuffer
   private void writeU16LEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -252,7 +258,7 @@ public final class BSSWriterByteBuffer
   private void writeS16BEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -267,7 +273,7 @@ public final class BSSWriterByteBuffer
   private void writeU16BEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -281,28 +287,28 @@ public final class BSSWriterByteBuffer
 
   @Override
   public void writeS16LE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16LEp(null, b);
   }
 
   @Override
   public void writeS16BE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16BEp(null, b);
   }
 
   @Override
   public void writeU16LE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16LEp(null, b);
   }
 
   @Override
   public void writeU16BE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16BEp(null, b);
   }
@@ -311,7 +317,7 @@ public final class BSSWriterByteBuffer
   public void writeS16LE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -320,7 +326,7 @@ public final class BSSWriterByteBuffer
   public void writeS16BE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -329,7 +335,7 @@ public final class BSSWriterByteBuffer
   public void writeU16LE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -338,7 +344,7 @@ public final class BSSWriterByteBuffer
   public void writeU16BE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -346,7 +352,7 @@ public final class BSSWriterByteBuffer
   private void writeS32LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -361,7 +367,7 @@ public final class BSSWriterByteBuffer
   private void writeU32LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -376,7 +382,7 @@ public final class BSSWriterByteBuffer
   private void writeS32BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -391,7 +397,7 @@ public final class BSSWriterByteBuffer
   private void writeU32BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -405,28 +411,28 @@ public final class BSSWriterByteBuffer
 
   @Override
   public void writeS32LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32LEp(null, b);
   }
 
   @Override
   public void writeS32BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32BEp(null, b);
   }
 
   @Override
   public void writeU32LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32LEp(null, b);
   }
 
   @Override
   public void writeU32BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32BEp(null, b);
   }
@@ -435,7 +441,7 @@ public final class BSSWriterByteBuffer
   public void writeS32LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -444,7 +450,7 @@ public final class BSSWriterByteBuffer
   public void writeS32BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -453,7 +459,7 @@ public final class BSSWriterByteBuffer
   public void writeU32LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -462,7 +468,7 @@ public final class BSSWriterByteBuffer
   public void writeU32BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -470,7 +476,7 @@ public final class BSSWriterByteBuffer
   private void writeS64LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -483,7 +489,7 @@ public final class BSSWriterByteBuffer
   private void writeU64LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -496,7 +502,7 @@ public final class BSSWriterByteBuffer
   private void writeS64BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -509,7 +515,7 @@ public final class BSSWriterByteBuffer
   private void writeU64BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -521,28 +527,28 @@ public final class BSSWriterByteBuffer
 
   @Override
   public void writeS64LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64LEp(null, b);
   }
 
   @Override
   public void writeS64BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64BEp(null, b);
   }
 
   @Override
   public void writeU64LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64LEp(null, b);
   }
 
   @Override
   public void writeU64BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64BEp(null, b);
   }
@@ -551,7 +557,7 @@ public final class BSSWriterByteBuffer
   public void writeS64LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -560,7 +566,7 @@ public final class BSSWriterByteBuffer
   public void writeS64BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -569,7 +575,7 @@ public final class BSSWriterByteBuffer
   public void writeU64LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -578,7 +584,7 @@ public final class BSSWriterByteBuffer
   public void writeU64BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -588,7 +594,7 @@ public final class BSSWriterByteBuffer
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     Objects.requireNonNull(buffer, "buffer");
     this.checkNotClosed();
@@ -604,7 +610,7 @@ public final class BSSWriterByteBuffer
   public void writeBytes(
     final String name,
     final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(
       Objects.requireNonNull(name, "name"),
@@ -619,14 +625,14 @@ public final class BSSWriterByteBuffer
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(name, buffer, offset, length);
   }
 
   @Override
   public void writeBytes(final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(null, buffer, 0, buffer.length);
   }
@@ -636,7 +642,7 @@ public final class BSSWriterByteBuffer
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(null, buffer, offset, length);
   }
@@ -645,7 +651,7 @@ public final class BSSWriterByteBuffer
     final String name,
     final double b,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -659,7 +665,7 @@ public final class BSSWriterByteBuffer
     final String name,
     final double b,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -675,7 +681,7 @@ public final class BSSWriterByteBuffer
     final String name,
     final double b,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -691,14 +697,14 @@ public final class BSSWriterByteBuffer
   public void writeF64BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(Objects.requireNonNull(name, "name"), b, BIG_ENDIAN);
   }
 
   @Override
   public void writeF64BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(null, b, BIG_ENDIAN);
   }
@@ -707,14 +713,14 @@ public final class BSSWriterByteBuffer
   public void writeF32BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(Objects.requireNonNull(name, "name"), b, BIG_ENDIAN);
   }
 
   @Override
   public void writeF32BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(null, b, BIG_ENDIAN);
   }
@@ -723,14 +729,14 @@ public final class BSSWriterByteBuffer
   public void writeF64LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(Objects.requireNonNull(name, "name"), b, LITTLE_ENDIAN);
   }
 
   @Override
   public void writeF64LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(null, b, LITTLE_ENDIAN);
   }
@@ -739,14 +745,14 @@ public final class BSSWriterByteBuffer
   public void writeF32LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(Objects.requireNonNull(name, "name"), b, LITTLE_ENDIAN);
   }
 
   @Override
   public void writeF32LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(null, b, LITTLE_ENDIAN);
   }
@@ -755,14 +761,14 @@ public final class BSSWriterByteBuffer
   public void writeF16BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(Objects.requireNonNull(name, "name"), b, BIG_ENDIAN);
   }
 
   @Override
   public void writeF16BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(null, b, BIG_ENDIAN);
   }
@@ -771,14 +777,14 @@ public final class BSSWriterByteBuffer
   public void writeF16LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(Objects.requireNonNull(name, "name"), b, LITTLE_ENDIAN);
   }
 
   @Override
   public void writeF16LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(null, b, LITTLE_ENDIAN);
   }
@@ -787,5 +793,21 @@ public final class BSSWriterByteBuffer
   protected BSSRangeHalfOpen physicalSourceAbsoluteBounds()
   {
     return this.physicalBounds;
+  }
+
+  @Override
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
+    final String message,
+    final Throwable cause,
+    final Map<String, String> attributes,
+    final BSSExceptionConstructorType<E> constructor)
+  {
+    return BSSExceptions.create(
+      this,
+      Optional.of(cause),
+      message,
+      attributes,
+      constructor
+    );
   }
 }

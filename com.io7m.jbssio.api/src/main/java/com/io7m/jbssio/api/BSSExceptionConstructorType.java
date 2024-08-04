@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2024 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,28 +14,37 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+
 package com.io7m.jbssio.api;
 
+import com.io7m.seltzer.api.SStructuredErrorType;
 
-import com.io7m.seltzer.io.SIOException;
+import java.util.Map;
+import java.util.Optional;
 
 /**
- * A random access writer.
+ * An exception constructor.
+ *
+ * @param <S> The type of exception
+ *
+ * @since 3.0.0
  */
 
-public interface BSSWriterRandomAccessType extends BSSWriterType,
-  BSSSeekableType
+public interface BSSExceptionConstructorType<S extends Exception & SStructuredErrorType<String>>
 {
-  @Override
-  BSSWriterRandomAccessType createSubWriterAt(
-    String name,
-    long offset)
-    throws SIOException;
+  /**
+   * Create a new exception.
+   *
+   * @param message    The exception message
+   * @param cause      The cause, if any
+   * @param attributes The attributes
+   *
+   * @return A new exception
+   */
 
-  @Override
-  BSSWriterRandomAccessType createSubWriterAtBounded(
-    String name,
-    long offset,
-    long size)
-    throws SIOException;
+  S create(
+    String message,
+    Optional<Throwable> cause,
+    Map<String, String> attributes
+  );
 }

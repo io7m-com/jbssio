@@ -17,7 +17,7 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * An object that can seek arbitrarily.
@@ -30,9 +30,9 @@ public interface BSSSeekableType
    *
    * @param position The position
    *
-   * @throws IOException If the seek position is not within the bounds of the current observer
+   * @throws SIOException If the seek position is not within the bounds of the current observer
    */
 
   void seekTo(long position)
-    throws IOException;
+    throws SIOException;
 }

@@ -18,6 +18,13 @@ package com.io7m.jbssio.tests;
 
 import com.io7m.ieee754b16.Binary16;
 import com.io7m.jbssio.api.BSSReaderRandomAccessType;
+import com.io7m.jbssio.vanilla.BSSReaders;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SIOException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -26,13 +33,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.Channel;
 import java.util.Map;
+import java.util.Optional;
 
-import com.io7m.jbssio.vanilla.BSSReaders;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class BSSReadersRandomAccessChannelContract<T extends Channel>
@@ -40,14 +43,19 @@ public abstract class BSSReadersRandomAccessChannelContract<T extends Channel>
   private static final Logger LOG = LoggerFactory.getLogger(
     BSSReadersRandomAccessChannelContract.class);
 
+  @SuppressWarnings("unchecked")
   private static void checkExceptionMessageContains(
     final Exception e,
     final String text)
   {
     LOG.debug("ex: ", e);
-    Assertions.assertTrue(
-      e.getMessage().contains(text),
-      "Exception message " + e.getMessage() + " contains " + text);
+
+    final var es = (SStructuredErrorType<String>) e;
+
+    assertTrue(
+      es.attributes().get("Field").contains(text),
+      "Exception attributes %s contains %s".formatted(es.attributes(), text)
+    );
   }
 
   protected abstract T channelOf(byte[] data)
@@ -1214,6 +1222,7 @@ public abstract class BSSReadersRandomAccessChannelContract<T extends Channel>
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public final void testException()
     throws IOException
   {
@@ -1225,21 +1234,32 @@ public abstract class BSSReadersRandomAccessChannelContract<T extends Channel>
       try (var reader = readers.createReaderFromStreamBounded(URI.create(
         "urn:fake"), stream, "a", 32L)) {
 
-        final var ex = reader.createException(
-          "message",
-          Map.ofEntries(
-            Map.entry("x", "y"),
-            Map.entry("z", "0.0")
-          ),
-          IOException::new
-        );
+        final var ex =
+          reader.createException(
+            "message",
+            Map.ofEntries(
+              Map.entry("x", "y"),
+              Map.entry("z", "0.0")
+            ),
+            (message, cause, attributes) -> {
+              return new SIOException(
+                message,
+                "error-io",
+                attributes
+              );
+            }
+          );
 
+        LOG.debug("{}", ex.attributes());
         assertTrue(ex.getMessage().contains("message"));
-        assertTrue(ex.getMessage().contains("x"));
-        assertTrue(ex.getMessage().contains("y"));
-        assertTrue(ex.getMessage().contains("z"));
-        assertTrue(ex.getMessage().contains("0.0"));
-        assertTrue(ex.getMessage().contains("Offset"));
+        assertTrue(ex.attributes().containsKey("x"));
+        assertEquals("y", ex.attributes().get("x"));
+        assertTrue(ex.attributes().containsKey("z"));
+        assertEquals("0.0", ex.attributes().get("z"));
+        assertTrue(ex.attributes().containsKey("Offset (Absolute)"));
+        assertTrue(ex.attributes().containsKey("Offset (Relative)"));
+        assertTrue(ex.attributes().containsKey("URI"));
+        assertTrue(ex.attributes().containsKey("Path"));
       }
     }
   }

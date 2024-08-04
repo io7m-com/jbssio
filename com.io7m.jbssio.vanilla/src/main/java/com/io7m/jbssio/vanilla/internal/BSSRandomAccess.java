@@ -19,22 +19,25 @@ package com.io7m.jbssio.vanilla.internal;
 
 import com.io7m.jbssio.api.BSSAddressableType;
 import com.io7m.jbssio.api.BSSCloseableType;
+import com.io7m.jbssio.api.BSSExceptionConstructorType;
 import com.io7m.jbssio.api.BSSFallibleType;
 import com.io7m.jbssio.api.BSSSeekableType;
 import com.io7m.jbssio.api.BSSSkippableType;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 
 abstract class BSSRandomAccess<T>
   implements BSSSeekableType,
@@ -80,7 +83,7 @@ abstract class BSSRandomAccess<T>
   }
 
   protected abstract BSSRangeHalfOpen physicalSourceAbsoluteBounds()
-    throws IOException;
+    throws SIOException;
 
   protected final BSSRandomAccess<T> parent()
   {
@@ -129,7 +132,7 @@ abstract class BSSRandomAccess<T>
   }
 
   private OptionalLong absoluteEnd()
-    throws IOException
+    throws SIOException
   {
     final var specStart =
       this.absoluteStart();
@@ -151,7 +154,7 @@ abstract class BSSRandomAccess<T>
   final void checkHasBytesRemaining(
     final String name,
     final long want)
-    throws IOException
+    throws SIOException
   {
     final var remainingOpt = this.bytesRemaining();
     if (remainingOpt.isPresent()) {
@@ -187,7 +190,7 @@ abstract class BSSRandomAccess<T>
     return new BSSRangeHalfOpen(offset, this.parentRangeRelative.interval());
   }
 
-  private IOException outOfBounds(
+  private SIOException outOfBounds(
     final String name,
     final long targetPosition)
   {
@@ -212,7 +215,7 @@ abstract class BSSRandomAccess<T>
 
   @Override
   public final void skip(final long size)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(null, size);
@@ -221,7 +224,7 @@ abstract class BSSRandomAccess<T>
 
   @Override
   public final void align(final int alignment)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     this.checkNotClosed();
     final var diff = this.offsetCurrentAbsolute() % (long) alignment;
@@ -234,7 +237,7 @@ abstract class BSSRandomAccess<T>
 
   @Override
   public final OptionalLong bytesRemaining()
-    throws IOException
+    throws SIOException
   {
     final var absEnd = this.absoluteEnd();
     if (absEnd.isPresent()) {
@@ -246,7 +249,7 @@ abstract class BSSRandomAccess<T>
 
   @Override
   public final void seekTo(final long position)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
 
@@ -314,13 +317,14 @@ abstract class BSSRandomAccess<T>
   }
 
   @Override
-  public final <E extends Exception> E createException(
+  public final <E extends Exception & SStructuredErrorType<String>> E createException(
     final String message,
     final Map<String, String> attributes,
-    final Function<String, E> constructor)
+    final BSSExceptionConstructorType<E> constructor)
   {
     return BSSExceptions.create(
       this,
+      Optional.empty(),
       message,
       attributes,
       constructor
