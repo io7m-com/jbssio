@@ -61,9 +61,10 @@
         <c:change date="2024-05-09T00:00:00+00:00" summary="Update com.io7m.ieee754b16:com.io7m.ieee754b16.core:3.0.0 → 3.0.1."/>
       </c:changes>
     </c:release>
-    <c:release date="2024-08-04T10:35:01+00:00" is-open="true" ticket-system="com.github.io7m.jbssio" version="3.0.0">
+    <c:release date="2025-05-04T17:18:44+00:00" is-open="true" ticket-system="com.github.io7m.jbssio" version="3.0.0">
       <c:changes>
-        <c:change compatible="false" date="2024-08-04T10:35:01+00:00" summary="The API now raises structured error exceptions."/>
+        <c:change compatible="false" date="2024-08-04T00:00:00+00:00" summary="The API now raises structured error exceptions."/>
+        <c:change date="2025-05-04T17:18:44+00:00" summary="Publish a com.io7m.jbssio.bom module."/>
       </c:changes>
     </c:release>
   </c:releases>
