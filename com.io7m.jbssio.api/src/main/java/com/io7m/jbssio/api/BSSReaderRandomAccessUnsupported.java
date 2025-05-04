@@ -16,13 +16,14 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
+
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalLong;
-import java.util.function.Function;
 
 /**
  * A reader that throws {@link UnsupportedOperationException} for all read operations.
@@ -195,7 +196,7 @@ return false;
 
   @Override
   public long readS32BE()
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     throw new UnsupportedOperationException();
   }
@@ -238,7 +239,7 @@ return false;
 
   @Override
   public long readS32BE(final String name)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     throw new UnsupportedOperationException();
   }
@@ -358,14 +359,14 @@ return false;
 
   @Override
   public void skip(final long size)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void align(final int size)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     throw new UnsupportedOperationException();
   }
@@ -378,7 +379,7 @@ return false;
 
   @Override
   public void close()
-    throws IOException
+    throws SIOException
   {
 
   }
@@ -390,10 +391,20 @@ return false;
   }
 
   @Override
-  public <E extends Exception> E createException(
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
     final String message,
     final Map<String, String> attributes,
-    final Function<String, E> constructor)
+    final BSSExceptionConstructorType<E> constructor)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
+    final String message,
+    final Throwable cause,
+    final Map<String, String> attributes,
+    final BSSExceptionConstructorType<E> constructor)
   {
     throw new UnsupportedOperationException();
   }

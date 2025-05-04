@@ -18,8 +18,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions for writing bytes.
@@ -35,15 +35,15 @@ public interface BSSWriterBytesType
    * @param name   The name of the value
    * @param buffer The byte buffer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeBytes(
     String name,
     byte[] buffer)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write bytes.
@@ -55,9 +55,9 @@ public interface BSSWriterBytesType
    * @param offset The offset in {@code buffer}
    * @param length The number of bytes to write
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeBytes(
@@ -65,7 +65,7 @@ public interface BSSWriterBytesType
     byte[] buffer,
     int offset,
     int length)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write bytes.
@@ -74,14 +74,14 @@ public interface BSSWriterBytesType
    *
    * @param buffer The byte buffer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeBytes(
     byte[] buffer)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Write bytes.
@@ -92,14 +92,14 @@ public interface BSSWriterBytesType
    * @param offset The offset in {@code buffer}
    * @param length The number of bytes to write
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
    *                      writer's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   void writeBytes(
     byte[] buffer,
     int offset,
     int length)
-    throws IOException;
+    throws SIOException;
 }

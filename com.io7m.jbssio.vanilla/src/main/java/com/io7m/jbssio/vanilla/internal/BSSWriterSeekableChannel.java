@@ -17,14 +17,19 @@
 package com.io7m.jbssio.vanilla.internal;
 
 import com.io7m.ieee754b16.Binary16;
+import com.io7m.jbssio.api.BSSExceptionConstructorType;
 import com.io7m.jbssio.api.BSSWriterRandomAccessType;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SIOException;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SeekableByteChannel;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.concurrent.Callable;
 
@@ -36,8 +41,8 @@ import static java.nio.ByteOrder.LITTLE_ENDIAN;
  */
 
 public final class BSSWriterSeekableChannel
-  extends BSSRandomAccess<BSSWriterRandomAccessType> implements
-  BSSWriterRandomAccessType
+  extends BSSRandomAccess<BSSWriterRandomAccessType>
+  implements BSSWriterRandomAccessType
 {
   /**
    * Seekable byte channels are assumed to be growable, for writers, and
@@ -103,7 +108,7 @@ public final class BSSWriterSeekableChannel
   public BSSWriterRandomAccessType createSubWriterAt(
     final String inName,
     final long offset)
-    throws IOException
+    throws SIOException
   {
     Objects.requireNonNull(inName, "path");
 
@@ -131,7 +136,7 @@ public final class BSSWriterSeekableChannel
     final String inName,
     final long offset,
     final long size)
-    throws IOException
+    throws SIOException
   {
     Objects.requireNonNull(inName, "path");
 
@@ -169,14 +174,14 @@ public final class BSSWriterSeekableChannel
   private void writeS8p(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 1L);
     final var position = this.offsetCurrentAbsolute();
     this.increaseOffsetRelative(1L);
 
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.limit(1);
     this.writeBuffer.put(0, (byte) b);
@@ -184,24 +189,30 @@ public final class BSSWriterSeekableChannel
   }
 
   private void writeAll()
-    throws IOException
+    throws SIOException
   {
     while (this.writeBuffer.hasRemaining()) {
-      this.channel.write(this.writeBuffer);
+      try {
+        this.channel.write(this.writeBuffer);
+      } catch (final IOException e) {
+        throw BSSExceptions.wrap(
+          this, e, "Failed to write to channel.", Map.of()
+        );
+      }
     }
   }
 
   private void writeU8p(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 1L);
     final var position = this.offsetCurrentAbsolute();
     this.increaseOffsetRelative(1L);
 
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.limit(1);
     this.writeBuffer.put(0, (byte) (b & 0xff));
@@ -210,14 +221,14 @@ public final class BSSWriterSeekableChannel
 
   @Override
   public void writeS8(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS8p(null, b);
   }
 
   @Override
   public void writeU8(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU8p(null, b);
   }
@@ -226,7 +237,7 @@ public final class BSSWriterSeekableChannel
   public void writeS8(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS8p(Objects.requireNonNull(name, "name"), b);
   }
@@ -235,7 +246,7 @@ public final class BSSWriterSeekableChannel
   public void writeU8(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU8p(Objects.requireNonNull(name, "name"), b);
   }
@@ -244,9 +255,9 @@ public final class BSSWriterSeekableChannel
     final short b,
     final long position,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.order(order);
     this.writeBuffer.limit(2);
@@ -258,9 +269,9 @@ public final class BSSWriterSeekableChannel
     final int b,
     final long position,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.order(order);
     this.writeBuffer.limit(2);
@@ -271,7 +282,7 @@ public final class BSSWriterSeekableChannel
   private void writeS16LEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -283,7 +294,7 @@ public final class BSSWriterSeekableChannel
   private void writeU16LEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -295,7 +306,7 @@ public final class BSSWriterSeekableChannel
   private void writeS16BEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -307,7 +318,7 @@ public final class BSSWriterSeekableChannel
   private void writeU16BEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
@@ -318,28 +329,28 @@ public final class BSSWriterSeekableChannel
 
   @Override
   public void writeS16LE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16LEp(null, b);
   }
 
   @Override
   public void writeS16BE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16BEp(null, b);
   }
 
   @Override
   public void writeU16LE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16LEp(null, b);
   }
 
   @Override
   public void writeU16BE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16BEp(null, b);
   }
@@ -348,7 +359,7 @@ public final class BSSWriterSeekableChannel
   public void writeS16LE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -357,7 +368,7 @@ public final class BSSWriterSeekableChannel
   public void writeS16BE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -366,7 +377,7 @@ public final class BSSWriterSeekableChannel
   public void writeU16LE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -375,7 +386,7 @@ public final class BSSWriterSeekableChannel
   public void writeU16BE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -384,9 +395,9 @@ public final class BSSWriterSeekableChannel
     final int b,
     final long position,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.order(order);
     this.writeBuffer.limit(4);
@@ -397,7 +408,7 @@ public final class BSSWriterSeekableChannel
   private void writeS32LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -409,7 +420,7 @@ public final class BSSWriterSeekableChannel
   private void writeU32LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -421,7 +432,7 @@ public final class BSSWriterSeekableChannel
   private void writeS32BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -433,7 +444,7 @@ public final class BSSWriterSeekableChannel
   private void writeU32BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -444,28 +455,28 @@ public final class BSSWriterSeekableChannel
 
   @Override
   public void writeS32LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32LEp(null, b);
   }
 
   @Override
   public void writeS32BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32BEp(null, b);
   }
 
   @Override
   public void writeU32LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32LEp(null, b);
   }
 
   @Override
   public void writeU32BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32BEp(null, b);
   }
@@ -474,7 +485,7 @@ public final class BSSWriterSeekableChannel
   public void writeS32LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -483,7 +494,7 @@ public final class BSSWriterSeekableChannel
   public void writeS32BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -492,7 +503,7 @@ public final class BSSWriterSeekableChannel
   public void writeU32LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -501,7 +512,7 @@ public final class BSSWriterSeekableChannel
   public void writeU32BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -510,9 +521,9 @@ public final class BSSWriterSeekableChannel
     final long b,
     final long position,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.order(order);
     this.writeBuffer.limit(8);
@@ -523,7 +534,7 @@ public final class BSSWriterSeekableChannel
   private void writeS64LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -535,7 +546,7 @@ public final class BSSWriterSeekableChannel
   private void writeU64LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -547,7 +558,7 @@ public final class BSSWriterSeekableChannel
   private void writeS64BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -559,7 +570,7 @@ public final class BSSWriterSeekableChannel
   private void writeU64BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -570,28 +581,28 @@ public final class BSSWriterSeekableChannel
 
   @Override
   public void writeS64LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64LEp(null, b);
   }
 
   @Override
   public void writeS64BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64BEp(null, b);
   }
 
   @Override
   public void writeU64LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64LEp(null, b);
   }
 
   @Override
   public void writeU64BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64BEp(null, b);
   }
@@ -600,7 +611,7 @@ public final class BSSWriterSeekableChannel
   public void writeS64LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -609,7 +620,7 @@ public final class BSSWriterSeekableChannel
   public void writeS64BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -618,7 +629,7 @@ public final class BSSWriterSeekableChannel
   public void writeU64LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -627,7 +638,7 @@ public final class BSSWriterSeekableChannel
   public void writeU64BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -637,7 +648,7 @@ public final class BSSWriterSeekableChannel
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     Objects.requireNonNull(buffer, "writeBuffer");
     this.checkNotClosed();
@@ -647,9 +658,15 @@ public final class BSSWriterSeekableChannel
     this.increaseOffsetRelative(llength);
 
     final var wrapper = ByteBuffer.wrap(buffer, offset, length);
-    this.channel.position(position);
+    this.setChannelPosition(position);
     while (wrapper.hasRemaining()) {
-      this.channel.write(wrapper);
+      try {
+        this.channel.write(wrapper);
+      } catch (final IOException e) {
+        throw BSSExceptions.wrap(
+          this, e, "Failed to write to channel.", Map.of()
+        );
+      }
     }
   }
 
@@ -657,7 +674,7 @@ public final class BSSWriterSeekableChannel
   public void writeBytes(
     final String name,
     final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(
       Objects.requireNonNull(name, "name"),
@@ -672,14 +689,14 @@ public final class BSSWriterSeekableChannel
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(name, buffer, offset, length);
   }
 
   @Override
   public void writeBytes(final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(null, buffer, 0, buffer.length);
   }
@@ -689,7 +706,7 @@ public final class BSSWriterSeekableChannel
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(null, buffer, offset, length);
   }
@@ -698,7 +715,7 @@ public final class BSSWriterSeekableChannel
     final String name,
     final ByteOrder order,
     final double x)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 8L);
@@ -711,7 +728,7 @@ public final class BSSWriterSeekableChannel
     final String name,
     final ByteOrder order,
     final double x)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 4L);
@@ -724,14 +741,14 @@ public final class BSSWriterSeekableChannel
     final String name,
     final ByteOrder order,
     final double x)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(name, 2L);
     final var position = this.offsetCurrentAbsolute();
     this.increaseOffsetRelative(2L);
 
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.order(order);
     this.writeBuffer.limit(2);
@@ -743,9 +760,9 @@ public final class BSSWriterSeekableChannel
     final double x,
     final long position,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.order(order);
     this.writeBuffer.limit(8);
@@ -757,9 +774,9 @@ public final class BSSWriterSeekableChannel
     final double x,
     final long position,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
-    this.channel.position(position);
+    this.setChannelPosition(position);
     this.writeBuffer.position(0);
     this.writeBuffer.order(order);
     this.writeBuffer.limit(4);
@@ -767,18 +784,30 @@ public final class BSSWriterSeekableChannel
     this.writeAll();
   }
 
+  private void setChannelPosition(final long position)
+    throws SIOException
+  {
+    try {
+      this.channel.position(position);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to reposition channel.", Map.of()
+      );
+    }
+  }
+
   @Override
   public void writeF64BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64(Objects.requireNonNull(name, "name"), BIG_ENDIAN, b);
   }
 
   @Override
   public void writeF64BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64(null, BIG_ENDIAN, b);
   }
@@ -787,14 +816,14 @@ public final class BSSWriterSeekableChannel
   public void writeF16BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16(Objects.requireNonNull(name, "name"), BIG_ENDIAN, b);
   }
 
   @Override
   public void writeF16BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16(null, BIG_ENDIAN, b);
   }
@@ -803,14 +832,14 @@ public final class BSSWriterSeekableChannel
   public void writeF16LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16(Objects.requireNonNull(name, "name"), LITTLE_ENDIAN, b);
   }
 
   @Override
   public void writeF16LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16(null, LITTLE_ENDIAN, b);
   }
@@ -819,14 +848,14 @@ public final class BSSWriterSeekableChannel
   public void writeF32BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32(Objects.requireNonNull(name, "name"), BIG_ENDIAN, b);
   }
 
   @Override
   public void writeF32BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32(null, BIG_ENDIAN, b);
   }
@@ -835,14 +864,14 @@ public final class BSSWriterSeekableChannel
   public void writeF64LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64(Objects.requireNonNull(name, "name"), LITTLE_ENDIAN, b);
   }
 
   @Override
   public void writeF64LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64(null, LITTLE_ENDIAN, b);
   }
@@ -851,14 +880,14 @@ public final class BSSWriterSeekableChannel
   public void writeF32LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32(Objects.requireNonNull(name, "name"), LITTLE_ENDIAN, b);
   }
 
   @Override
   public void writeF32LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32(null, LITTLE_ENDIAN, b);
   }
@@ -867,5 +896,21 @@ public final class BSSWriterSeekableChannel
   protected BSSRangeHalfOpen physicalSourceAbsoluteBounds()
   {
     return PHYSICAL_BOUNDS;
+  }
+
+  @Override
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
+    final String message,
+    final Throwable cause,
+    final Map<String, String> attributes,
+    final BSSExceptionConstructorType<E> constructor)
+  {
+    return BSSExceptions.create(
+      this,
+      Optional.of(cause),
+      message,
+      attributes,
+      constructor
+    );
   }
 }

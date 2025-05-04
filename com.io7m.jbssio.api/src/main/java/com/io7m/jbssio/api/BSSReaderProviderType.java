@@ -16,7 +16,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+import com.io7m.seltzer.io.SIOException;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -38,14 +39,14 @@ public interface BSSReaderProviderType
    *
    * @return A new reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderSequentialType createReaderFromStream(
     URI uri,
     InputStream stream,
     String name)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new sequential reader from the given stream.
@@ -57,7 +58,7 @@ public interface BSSReaderProviderType
    *
    * @return A new reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderSequentialType createReaderFromStreamBounded(
@@ -65,7 +66,7 @@ public interface BSSReaderProviderType
     InputStream stream,
     String name,
     long size)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new sequential reader from the given stream.
@@ -77,7 +78,7 @@ public interface BSSReaderProviderType
    *
    * @return A new reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   default BSSReaderSequentialType createReaderFromStream(
@@ -85,7 +86,7 @@ public interface BSSReaderProviderType
     final InputStream stream,
     final String name,
     final OptionalLong size)
-    throws IOException
+    throws SIOException
   {
     if (size.isPresent()) {
       return this.createReaderFromStreamBounded(
@@ -107,7 +108,7 @@ public interface BSSReaderProviderType
    *
    * @return A new reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   default BSSReaderRandomAccessType createReaderFromChannel(
@@ -115,7 +116,7 @@ public interface BSSReaderProviderType
     final SeekableByteChannel channel,
     final String name,
     final OptionalLong size)
-    throws IOException
+    throws SIOException
   {
     if (size.isPresent()) {
       return this.createReaderFromChannelBounded(
@@ -136,14 +137,14 @@ public interface BSSReaderProviderType
    *
    * @return A new reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderRandomAccessType createReaderFromByteBuffer(
     URI uri,
     ByteBuffer buffer,
     String name)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new random access reader from the given seekable byte channel.
@@ -154,14 +155,14 @@ public interface BSSReaderProviderType
    *
    * @return A new reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderRandomAccessType createReaderFromChannel(
     URI uri,
     SeekableByteChannel channel,
     String name)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new random access reader from the given seekable byte channel.
@@ -173,7 +174,7 @@ public interface BSSReaderProviderType
    *
    * @return A new reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderRandomAccessType createReaderFromChannelBounded(
@@ -181,5 +182,5 @@ public interface BSSReaderProviderType
     SeekableByteChannel channel,
     String name,
     long size)
-    throws IOException;
+    throws SIOException;
 }

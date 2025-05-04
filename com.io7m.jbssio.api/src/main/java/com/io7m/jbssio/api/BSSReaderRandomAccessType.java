@@ -16,7 +16,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+import com.io7m.seltzer.io.SIOException;
+
 import java.util.Optional;
 
 /**
@@ -39,13 +40,13 @@ public interface BSSReaderRandomAccessType extends BSSReaderType,
    *
    * @return A new sub reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderRandomAccessType createSubReaderAt(
     String name,
     long offset)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new sub reader with the given {@code name}, starting at {@code offset} bytes from the
@@ -57,12 +58,12 @@ public interface BSSReaderRandomAccessType extends BSSReaderType,
    *
    * @return A new sub reader
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSReaderRandomAccessType createSubReaderAtBounded(
     String name,
     long offset,
     long size)
-    throws IOException;
+    throws SIOException;
 }

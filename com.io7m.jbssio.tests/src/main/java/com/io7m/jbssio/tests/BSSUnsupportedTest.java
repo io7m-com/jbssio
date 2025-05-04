@@ -20,6 +20,7 @@ import com.io7m.jbssio.api.BSSReaderRandomAccessUnsupported;
 import com.io7m.jbssio.api.BSSReaderSequentialUnsupported;
 import com.io7m.jbssio.api.BSSWriterRandomAccessUnsupported;
 import com.io7m.jbssio.api.BSSWriterSequentialUnsupported;
+import com.io7m.seltzer.io.SIOException;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -31,6 +32,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -69,6 +71,14 @@ public final class BSSUnsupportedTest
       new BSSReaderSequentialUnsupported()
         .readBytes("x", new byte[]{0x0}, 0, 1);
     });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSReaderSequentialUnsupported()
+        .createException("message", new IOException(), Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
+    });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSReaderSequentialUnsupported()
+        .createException("message", Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
+    });
 
     new BSSReaderSequentialUnsupported().close();
     assertEquals(Optional.empty(), new BSSReaderSequentialUnsupported().parentReader());
@@ -106,6 +116,14 @@ public final class BSSUnsupportedTest
     assertThrows(UnsupportedOperationException.class, () -> {
       new BSSReaderRandomAccessUnsupported()
         .createSubReaderAtBounded("x", 23L, 23L);
+    });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSReaderRandomAccessUnsupported()
+        .createException("message", new IOException(), Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
+    });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSReaderRandomAccessUnsupported()
+        .createException("message", Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
     });
 
     new BSSReaderRandomAccessUnsupported().close();
@@ -157,6 +175,14 @@ public final class BSSUnsupportedTest
       new BSSWriterSequentialUnsupported()
         .padTo(0, (byte) 0);
     });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSWriterSequentialUnsupported()
+        .createException("message", new IOException(), Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
+    });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSWriterSequentialUnsupported()
+        .createException("message", Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
+    });
 
     new BSSWriterSequentialUnsupported().close();
     assertFalse(new BSSWriterSequentialUnsupported().isClosed());
@@ -201,6 +227,14 @@ public final class BSSUnsupportedTest
     assertThrows(UnsupportedOperationException.class, () -> {
       new BSSWriterRandomAccessUnsupported()
         .writeBytes("x", new byte[]{0x0});
+    });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSWriterRandomAccessUnsupported()
+        .createException("message", new IOException(), Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
+    });
+    assertThrows(UnsupportedOperationException.class, () -> {
+      new BSSWriterRandomAccessUnsupported()
+        .createException("message", Map.of(), (message, cause, attributes) -> new SIOException(message, "error-io", attributes));
     });
 
     new BSSWriterRandomAccessUnsupported().close();

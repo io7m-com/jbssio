@@ -17,12 +17,15 @@
 package com.io7m.jbssio.vanilla.internal;
 
 import com.io7m.ieee754b16.Binary16;
+import com.io7m.jbssio.api.BSSExceptionConstructorType;
 import com.io7m.jbssio.api.BSSWriterSequentialType;
+import com.io7m.seltzer.api.SStructuredErrorType;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 import org.apache.commons.io.output.CloseShieldOutputStream;
 import org.apache.commons.io.output.CountingOutputStream;
 
 import java.io.BufferedOutputStream;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -32,9 +35,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.OptionalLong;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Function;
 
 import static com.io7m.jbssio.vanilla.internal.BSSPaths.PATH_SEPARATOR;
 import static java.nio.ByteOrder.BIG_ENDIAN;
@@ -105,7 +108,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
     return new BSSWriterStream(null, uri, inName, wrappedStream, 0L, inSize);
   }
 
-  private IOException outOfBounds(
+  private SIOException outOfBounds(
     final String name,
     final long targetPosition)
   {
@@ -124,8 +127,9 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   }
 
   @Override
-  public void skip(final long skipSize)
-    throws IOException, EOFException
+  public void skip(
+    final long skipSize)
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(skipSize, null);
@@ -135,13 +139,17 @@ public final class BSSWriterStream implements BSSWriterSequentialType
         output.write(0x0);
       }
       output.flush();
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
     }
   }
 
   private void checkHasBytesRemaining(
     final long count,
     final String name)
-    throws IOException
+    throws SIOException
   {
     if (this.size.isPresent()) {
       final var sizeLimit = this.size.getAsLong();
@@ -154,7 +162,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
 
   @Override
   public void align(final int alignment)
-    throws IOException, EOFException
+    throws SIOException, SEOFException
   {
     this.checkNotClosed();
 
@@ -177,24 +185,36 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   private void writeS8p(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkHasBytesRemaining(1L, name);
-    this.stream.write(b);
+    try {
+      this.stream.write(b);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeU8p(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkHasBytesRemaining(1L, name);
-    this.stream.write(b);
+    try {
+      this.stream.write(b);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   @Override
   public void writeS8(final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.writeS8p(null, b);
@@ -202,7 +222,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
 
   @Override
   public void writeU8(final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.writeU8p(null, b);
@@ -212,7 +232,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeS8(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.writeS8p(Objects.requireNonNull(name, "name"), b);
@@ -222,7 +242,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeU8(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.writeU8p(Objects.requireNonNull(name, "name"), b);
@@ -231,75 +251,99 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   private void writeS16LEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(2L, name);
     this.buffer2w.order(LITTLE_ENDIAN);
     this.buffer2w.putShort(0, (short) b);
-    this.stream.write(this.buffer2);
+    try {
+      this.stream.write(this.buffer2);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeU16LEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(2L, name);
     this.buffer2w.order(LITTLE_ENDIAN);
     this.buffer2w.putChar(0, (char) b);
-    this.stream.write(this.buffer2);
+    try {
+      this.stream.write(this.buffer2);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeS16BEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(2L, name);
     this.buffer2w.order(BIG_ENDIAN);
     this.buffer2w.putShort(0, (short) b);
-    this.stream.write(this.buffer2);
+    try {
+      this.stream.write(this.buffer2);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeU16BEp(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(2L, name);
     this.buffer2w.order(BIG_ENDIAN);
     this.buffer2w.putChar(0, (char) b);
-    this.stream.write(this.buffer2);
+    try {
+      this.stream.write(this.buffer2);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   @Override
   public void writeS16LE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16LEp(null, b);
   }
 
   @Override
   public void writeS16BE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16BEp(null, b);
   }
 
   @Override
   public void writeU16LE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16LEp(null, b);
   }
 
   @Override
   public void writeU16BE(final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16BEp(null, b);
   }
@@ -308,7 +352,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeS16LE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -317,7 +361,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeS16BE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeS16BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -326,7 +370,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeU16LE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -335,7 +379,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeU16BE(
     final String name,
     final int b)
-    throws IOException
+    throws SIOException
   {
     this.writeU16BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -343,75 +387,99 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   private void writeS32LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(4L, name);
     this.buffer4w.order(LITTLE_ENDIAN);
     this.buffer4w.putInt(0, (int) b);
-    this.stream.write(this.buffer4);
+    try {
+      this.stream.write(this.buffer4);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeU32LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(4L, name);
     this.buffer4w.order(LITTLE_ENDIAN);
     this.buffer4w.putInt(0, (int) (b & 0xffff_ffff));
-    this.stream.write(this.buffer4);
+    try {
+      this.stream.write(this.buffer4);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeS32BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(4L, name);
     this.buffer4w.order(BIG_ENDIAN);
     this.buffer4w.putInt(0, (int) b);
-    this.stream.write(this.buffer4);
+    try {
+      this.stream.write(this.buffer4);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeU32BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(4L, name);
     this.buffer4w.order(BIG_ENDIAN);
     this.buffer4w.putInt(0, (int) (b & 0xffff_ffff));
-    this.stream.write(this.buffer4);
+    try {
+      this.stream.write(this.buffer4);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   @Override
   public void writeS32LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32LEp(null, b);
   }
 
   @Override
   public void writeS32BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32BEp(null, b);
   }
 
   @Override
   public void writeU32LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32LEp(null, b);
   }
 
   @Override
   public void writeU32BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32BEp(null, b);
   }
@@ -420,7 +488,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeS32LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -429,7 +497,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeS32BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS32BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -438,7 +506,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeU32LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -447,7 +515,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeU32BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU32BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -455,75 +523,99 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   private void writeS64LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(8L, name);
     this.buffer8w.order(LITTLE_ENDIAN);
     this.buffer8w.putLong(0, b);
-    this.stream.write(this.buffer8);
+    try {
+      this.stream.write(this.buffer8);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeU64LEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(8L, name);
     this.buffer8w.order(LITTLE_ENDIAN);
     this.buffer8w.putLong(0, b);
-    this.stream.write(this.buffer8);
+    try {
+      this.stream.write(this.buffer8);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeS64BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(8L, name);
     this.buffer8w.order(BIG_ENDIAN);
     this.buffer8w.putLong(0, b);
-    this.stream.write(this.buffer8);
+    try {
+      this.stream.write(this.buffer8);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeU64BEp(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(8L, name);
     this.buffer8w.order(BIG_ENDIAN);
     this.buffer8w.putLong(0, b);
-    this.stream.write(this.buffer8);
+    try {
+      this.stream.write(this.buffer8);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   @Override
   public void writeS64LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64LEp(null, b);
   }
 
   @Override
   public void writeS64BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64BEp(null, b);
   }
 
   @Override
   public void writeU64LE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64LEp(null, b);
   }
 
   @Override
   public void writeU64BE(final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64BEp(null, b);
   }
@@ -532,7 +624,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeS64LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -541,7 +633,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeS64BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeS64BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -550,7 +642,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeU64LE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64LEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -559,7 +651,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeU64BE(
     final String name,
     final long b)
-    throws IOException
+    throws SIOException
   {
     this.writeU64BEp(Objects.requireNonNull(name, "name"), b);
   }
@@ -569,19 +661,25 @@ public final class BSSWriterStream implements BSSWriterSequentialType
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     Objects.requireNonNull(buffer, "buffer");
     this.checkNotClosed();
     this.checkHasBytesRemaining(length, name);
-    this.stream.write(buffer, offset, length);
+    try {
+      this.stream.write(buffer, offset, length);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   @Override
   public void writeBytes(
     final String name,
     final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(
       Objects.requireNonNull(name, "name"),
@@ -596,14 +694,14 @@ public final class BSSWriterStream implements BSSWriterSequentialType
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(name, buffer, offset, length);
   }
 
   @Override
   public void writeBytes(final byte[] buffer)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(null, buffer, 0, buffer.length);
   }
@@ -613,7 +711,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
     final byte[] buffer,
     final int offset,
     final int length)
-    throws IOException
+    throws SIOException
   {
     this.writeBytesP(null, buffer, offset, length);
   }
@@ -622,53 +720,71 @@ public final class BSSWriterStream implements BSSWriterSequentialType
     final String name,
     final double b,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(8L, name);
     this.buffer8w.order(order);
     this.buffer8w.putDouble(0, b);
-    this.stream.write(this.buffer8);
+    try {
+      this.stream.write(this.buffer8);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeF32p(
     final String name,
     final double b,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(4L, name);
     this.buffer4w.order(order);
     this.buffer4w.putFloat(0, (float) b);
-    this.stream.write(this.buffer4);
+    try {
+      this.stream.write(this.buffer4);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   private void writeF16p(
     final String name,
     final double b,
     final ByteOrder order)
-    throws IOException
+    throws SIOException
   {
     this.checkNotClosed();
     this.checkHasBytesRemaining(2L, name);
     this.buffer2w.order(order);
     this.buffer2w.putChar(0, Binary16.packDouble(b));
-    this.stream.write(this.buffer2);
+    try {
+      this.stream.write(this.buffer2);
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to write to stream.", Map.of()
+      );
+    }
   }
 
   @Override
   public void writeF64BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(Objects.requireNonNull(name, "name"), b, BIG_ENDIAN);
   }
 
   @Override
   public void writeF64BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(null, b, BIG_ENDIAN);
   }
@@ -677,14 +793,14 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeF16BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(Objects.requireNonNull(name, "name"), b, BIG_ENDIAN);
   }
 
   @Override
   public void writeF16BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(null, b, BIG_ENDIAN);
   }
@@ -693,14 +809,14 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeF16LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(Objects.requireNonNull(name, "name"), b, LITTLE_ENDIAN);
   }
 
   @Override
   public void writeF16LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF16p(null, b, LITTLE_ENDIAN);
   }
@@ -709,14 +825,14 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeF32BE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(Objects.requireNonNull(name, "name"), b, BIG_ENDIAN);
   }
 
   @Override
   public void writeF32BE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(null, b, BIG_ENDIAN);
   }
@@ -725,14 +841,14 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeF64LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(Objects.requireNonNull(name, "name"), b, LITTLE_ENDIAN);
   }
 
   @Override
   public void writeF64LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF64p(null, b, LITTLE_ENDIAN);
   }
@@ -741,14 +857,14 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public void writeF32LE(
     final String name,
     final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(Objects.requireNonNull(name, "name"), b, LITTLE_ENDIAN);
   }
 
   @Override
   public void writeF32LE(final double b)
-    throws IOException
+    throws SIOException
   {
     this.writeF32p(null, b, LITTLE_ENDIAN);
   }
@@ -794,11 +910,17 @@ public final class BSSWriterStream implements BSSWriterSequentialType
 
   @Override
   public void close()
-    throws IOException
+    throws SIOException
   {
     if (this.closed.compareAndSet(false, true)) {
       if (this.parent == null) {
-        this.stream.close();
+        try {
+          this.stream.close();
+        } catch (final IOException e) {
+          throw BSSExceptions.wrap(
+            this, e, "Failed to close stream.", Map.of()
+          );
+        }
       }
     }
   }
@@ -817,7 +939,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public BSSWriterSequentialType createSubWriterAt(
     final String name,
     final long targetOffset)
-    throws IOException
+    throws SIOException
   {
     Objects.requireNonNull(name, "name");
 
@@ -848,7 +970,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
       this.size);
   }
 
-  private EOFException streamPositionExceeded(
+  private SEOFException streamPositionExceeded(
     final long targetOffset)
   {
     final var attributes = new HashMap<String, String>(4);
@@ -866,7 +988,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
     final String name,
     final long targetOffset,
     final long newSize)
-    throws IOException
+    throws SIOException
   {
     Objects.requireNonNull(name, "name");
 
@@ -893,7 +1015,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
     this.skip(seek);
 
     final var newStream =
-      new CountingOutputStream(new CloseShieldOutputStream(this.stream));
+      new CountingOutputStream(CloseShieldOutputStream.wrap(this.stream));
 
     final var newName =
       new StringBuilder(this.path.length() + name.length() + 2)
@@ -915,7 +1037,7 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   public long padTo(
     final long offset,
     final byte value)
-    throws IOException
+    throws SIOException
   {
     final var diff = Math.max(0L, offset - this.offsetCurrentRelative());
     if (diff == 0L) {
@@ -945,14 +1067,31 @@ public final class BSSWriterStream implements BSSWriterSequentialType
   }
 
   @Override
-  public <E extends Exception> E createException(
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
     final String message,
     final Map<String, String> attributes,
-    final Function<String, E> constructor)
+    final BSSExceptionConstructorType<E> constructor)
+  {
+    return BSSExceptions.create(
+      this,
+      Optional.empty(),
+      message,
+      attributes,
+      constructor
+    );
+  }
+
+  @Override
+  public <E extends Exception & SStructuredErrorType<String>> E createException(
+    final String message,
+    final Throwable cause,
+    final Map<String, String> attributes,
+    final BSSExceptionConstructorType<E> constructor)
   {
     return BSSExceptions.create(
       this,
       message,
+      cause,
       attributes,
       constructor
     );

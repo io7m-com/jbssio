@@ -35,7 +35,8 @@
     when parsing complex binary structures. Individual <i>readers</i> and
     <i>writers</i> are assigned names as they are created, and these names are
     appended together during nesting to construct detailed diagnostic messages
-    when errors occur. For example:
+    when errors occur. All exceptions raised by the API are
+    <a href="https://www.io7m.com/software/seltzer/">structured errors</a>:
   </p>
 
   <pre class="code"><![CDATA[
@@ -48,7 +49,7 @@ java.io.IOException: Out of bounds.
 ]]></pre>
 
   <p>
-    The above message clearly indicates that the code that was attempting
+    The above error clearly indicates that the code that was attempting
     to read the <tt>size</tt> field, of the <tt>info</tt> member of the
     <tt>header</tt> structure, ended up trying to read more data than the
     <i>reader</i> was configured to allow: The <i>reader</i> was specified

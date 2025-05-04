@@ -9,7 +9,7 @@
   <parent>
     <artifactId>com.io7m.jbssio</artifactId>
     <groupId>com.io7m.jbssio</groupId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
   </parent>
 
   <artifactId>com.io7m.jbssio.ext.bounded</artifactId>
@@ -23,6 +23,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>com.io7m.jbssio.api</artifactId>
       <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.io7m.seltzer</groupId>
+      <artifactId>com.io7m.seltzer.io</artifactId>
     </dependency>
 
     <dependency>

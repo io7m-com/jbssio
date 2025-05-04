@@ -24,7 +24,6 @@ import com.io7m.jbssio.vanilla.internal.BSSReaderSeekableChannel;
 import com.io7m.jbssio.vanilla.internal.BSSReaderStream;
 import org.osgi.service.component.annotations.Component;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -62,7 +61,8 @@ public final class BSSReaders implements BSSReaderProviderType
       uri,
       stream,
       name,
-      OptionalLong.empty());
+      OptionalLong.empty()
+    );
   }
 
   @Override
@@ -80,7 +80,8 @@ public final class BSSReaders implements BSSReaderProviderType
       uri,
       stream,
       name,
-      OptionalLong.of(size));
+      OptionalLong.of(size)
+    );
   }
 
   @Override
@@ -88,7 +89,6 @@ public final class BSSReaders implements BSSReaderProviderType
     final URI uri,
     final ByteBuffer buffer,
     final String name)
-    throws IOException
   {
     Objects.requireNonNull(uri, "uri");
     Objects.requireNonNull(buffer, "buffer");
@@ -102,7 +102,6 @@ public final class BSSReaders implements BSSReaderProviderType
     final URI uri,
     final SeekableByteChannel channel,
     final String name)
-    throws IOException
   {
     Objects.requireNonNull(uri, "uri");
     Objects.requireNonNull(channel, "channel");
@@ -112,7 +111,8 @@ public final class BSSReaders implements BSSReaderProviderType
       uri,
       channel,
       name,
-      OptionalLong.empty());
+      OptionalLong.empty()
+    );
   }
 
   @Override
@@ -121,7 +121,6 @@ public final class BSSReaders implements BSSReaderProviderType
     final SeekableByteChannel channel,
     final String name,
     final long size)
-    throws IOException
   {
     Objects.requireNonNull(uri, "uri");
     Objects.requireNonNull(channel, "channel");
@@ -131,6 +130,7 @@ public final class BSSReaders implements BSSReaderProviderType
       uri,
       channel,
       name,
-      OptionalLong.of(size));
+      OptionalLong.of(size)
+    );
   }
 }

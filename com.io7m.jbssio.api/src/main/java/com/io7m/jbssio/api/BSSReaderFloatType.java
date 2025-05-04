@@ -17,8 +17,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions for reading floating-point values.
@@ -33,13 +33,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF16BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 16-bit floating point, big-endian value.
@@ -48,13 +48,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF16LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 16-bit floating point, big-endian value.
@@ -65,13 +65,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF16BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 16-bit floating point, big-endian value.
@@ -82,13 +82,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF16LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 32-bit floating point, big-endian value.
@@ -97,13 +97,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF32BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 32-bit floating point, big-endian value.
@@ -112,13 +112,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF32LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
 
   /**
@@ -130,13 +130,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF32BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 32-bit floating point, big-endian value.
@@ -147,13 +147,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   float readF32LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit floating point, big-endian value.
@@ -162,13 +162,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   double readD64BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit floating point, big-endian value.
@@ -177,13 +177,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   double readD64LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit floating point, big-endian value.
@@ -194,13 +194,13 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   double readD64BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit floating point, big-endian value.
@@ -211,11 +211,11 @@ public interface BSSReaderFloatType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   double readD64LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 }

@@ -17,8 +17,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.EOFException;
-import java.io.IOException;
+import com.io7m.seltzer.io.SEOFException;
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * Functions for reading unsigned integers.
@@ -33,13 +33,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readU8()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 16-bit signed, big-endian integer.
@@ -48,13 +48,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readU16LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 32-bit unsigned, little-endian integer.
@@ -63,13 +63,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU32LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit unsigned, little-endian integer.
@@ -78,13 +78,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU64LE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 16-bit unsigned, big-endian integer.
@@ -93,13 +93,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readU16BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 32-bit unsigned, big-endian integer.
@@ -108,13 +108,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU32BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit unsigned, big-endian integer.
@@ -123,13 +123,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU64BE()
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 8-bit unsigned integer.
@@ -140,13 +140,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readU8(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 16-bit signed, big-endian integer.
@@ -157,13 +157,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readU16LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read an 32-bit unsigned, little-endian integer.
@@ -174,13 +174,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU32LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit unsigned, little-endian integer.
@@ -191,13 +191,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU64LE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 16-bit unsigned, big-endian integer.
@@ -208,13 +208,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   int readU16BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 32-bit unsigned, big-endian integer.
@@ -225,13 +225,13 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU32BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 
   /**
    * Read a 64-bit unsigned, big-endian integer.
@@ -242,11 +242,11 @@ public interface BSSReaderIntegerUnsignedType
    *
    * @return The resulting integer value
    *
-   * @throws IOException  On I/O errors, or if an attempt is made to seek or read beyond the
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or read beyond the
    *                      reader's limit
-   * @throws EOFException If EOF is reached
+   * @throws SEOFException If EOF is reached
    */
 
   long readU64BE(String name)
-    throws IOException, EOFException;
+    throws SIOException, SEOFException;
 }

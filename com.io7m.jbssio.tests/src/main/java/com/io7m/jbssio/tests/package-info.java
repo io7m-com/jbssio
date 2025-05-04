@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2024 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,28 +14,8 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-package com.io7m.jbssio.api;
-
-
-import com.io7m.seltzer.io.SIOException;
-
 /**
- * A random access writer.
+ * Java bitstream structure I/O (Test suite)
  */
 
-public interface BSSWriterRandomAccessType extends BSSWriterType,
-  BSSSeekableType
-{
-  @Override
-  BSSWriterRandomAccessType createSubWriterAt(
-    String name,
-    long offset)
-    throws SIOException;
-
-  @Override
-  BSSWriterRandomAccessType createSubWriterAtBounded(
-    String name,
-    long offset,
-    long size)
-    throws SIOException;
-}
+package com.io7m.jbssio.tests;

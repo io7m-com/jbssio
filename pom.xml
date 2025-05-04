@@ -9,12 +9,12 @@
   <parent>
     <groupId>com.io7m.primogenitor</groupId>
     <artifactId>com.io7m.primogenitor.full</artifactId>
-    <version>8.2.0</version>
+    <version>8.5.0</version>
   </parent>
 
   <groupId>com.io7m.jbssio</groupId>
   <artifactId>com.io7m.jbssio</artifactId>
-  <version>2.1.0</version>
+  <version>3.0.0</version>
   <packaging>pom</packaging>
 
   <name>com.io7m.jbssio</name>
@@ -25,6 +25,7 @@
 
   <modules>
     <module>com.io7m.jbssio.api</module>
+    <module>com.io7m.jbssio.bom</module>
     <module>com.io7m.jbssio.ext.bounded</module>
     <module>com.io7m.jbssio.tests</module>
     <module>com.io7m.jbssio.vanilla</module>
@@ -32,11 +33,18 @@
 
   <properties>
     <!-- Configuration -->
-    <io7m.api.previousVersion>2.0.0</io7m.api.previousVersion>
+    <io7m.api.previousVersion>2.1.0</io7m.api.previousVersion>
     <io7m.java.targetJavaVersion>17</io7m.java.targetJavaVersion>
 
+    <!-- io7m dependencies. -->
+    <com.io7m.seltzer.version>1.1.0</com.io7m.seltzer.version>
+    <com.io7m.ieee754b16.version>3.0.1</com.io7m.ieee754b16.version>
+
     <!-- Third-party dependencies. -->
-    <com.io7m.junit.version>5.10.2</com.io7m.junit.version>
+    <ch.qos.logback-classic.version>1.5.18</ch.qos.logback-classic.version>
+    <org.apache.commons-io.version>2.19.0</org.apache.commons-io.version>
+    <org.junit.version>5.12.2</org.junit.version>
+    <org.slf4j.version>2.0.17</org.slf4j.version>
   </properties>
 
   <licenses>
@@ -90,20 +98,41 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>com.io7m.seltzer</groupId>
+        <artifactId>com.io7m.seltzer.api</artifactId>
+        <version>${com.io7m.seltzer.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.io7m.seltzer</groupId>
+        <artifactId>com.io7m.seltzer.io</artifactId>
+        <version>${com.io7m.seltzer.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.io7m.ieee754b16</groupId>
+        <artifactId>com.io7m.ieee754b16.core</artifactId>
+        <version>${com.io7m.ieee754b16.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
-        <version>2.16.1</version>
+        <version>${org.apache.commons-io.version}</version>
       </dependency>
+
+      <!-- Logging -->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>2.0.13</version>
+        <version>${org.slf4j.version}</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
-        <version>1.5.6</version>
+        <version>${ch.qos.logback-classic.version}</version>
       </dependency>
+
+      <!-- Build and metadata. -->
       <dependency>
         <groupId>org.osgi</groupId>
         <artifactId>org.osgi.service.component.annotations</artifactId>
@@ -119,20 +148,14 @@
         <artifactId>org.osgi.annotation.bundle</artifactId>
         <version>2.0.0</version>
       </dependency>
+
+      <!-- Test suite. -->
       <dependency>
-        <groupId>com.io7m.ieee754b16</groupId>
-        <artifactId>com.io7m.ieee754b16.core</artifactId>
-        <version>3.0.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-api</artifactId>
-        <version>${com.io7m.junit.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>${com.io7m.junit.version}</version>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${org.junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

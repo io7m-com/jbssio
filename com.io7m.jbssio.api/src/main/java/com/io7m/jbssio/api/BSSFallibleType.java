@@ -16,8 +16,9 @@
 
 package com.io7m.jbssio.api;
 
+import com.io7m.seltzer.api.SStructuredErrorType;
+
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * The interface for creating exceptions with contextual information.
@@ -36,9 +37,30 @@ public interface BSSFallibleType
    * @return A new exception
    */
 
-  <E extends Exception> E createException(
+  <E extends Exception & SStructuredErrorType<String>> E createException(
     String message,
     Map<String, String> attributes,
-    Function<String, E> constructor
+    BSSExceptionConstructorType<E> constructor
+  );
+
+  /**
+   * Create an exception.
+   *
+   * @param message     The base exception message
+   * @param cause       The cause
+   * @param attributes  The exception attributes
+   * @param constructor The exception constructor
+   * @param <E>         The type of exception
+   *
+   * @return A new exception
+   *
+   * @since 3.0.0
+   */
+
+  <E extends Exception & SStructuredErrorType<String>> E createException(
+    String message,
+    Throwable cause,
+    Map<String, String> attributes,
+    BSSExceptionConstructorType<E> constructor
   );
 }

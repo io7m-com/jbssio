@@ -19,6 +19,7 @@ package com.io7m.jbssio.tests;
 import com.io7m.ieee754b16.Binary16;
 import com.io7m.jbssio.api.BSSWriterRandomAccessType;
 import com.io7m.jbssio.vanilla.BSSReaders;
+import com.io7m.seltzer.io.SIOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -33,6 +34,7 @@ import java.nio.channels.Channel;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class BSSWritersRandomAccessChannelContract<T extends Channel>
@@ -499,15 +501,25 @@ public abstract class BSSWritersRandomAccessChannelContract<T extends Channel>
             Map.entry("x", "y"),
             Map.entry("z", "0.0")
           ),
-          IOException::new
+          (message, cause, attributes) -> {
+            return new SIOException(
+              message,
+              "error-io",
+              attributes
+            );
+          }
         );
 
+        LOG.debug("{}", ex.attributes());
         assertTrue(ex.getMessage().contains("message"));
-        assertTrue(ex.getMessage().contains("x"));
-        assertTrue(ex.getMessage().contains("y"));
-        assertTrue(ex.getMessage().contains("z"));
-        assertTrue(ex.getMessage().contains("0.0"));
-        assertTrue(ex.getMessage().contains("Offset"));
+        assertTrue(ex.attributes().containsKey("x"));
+        assertEquals("y", ex.attributes().get("x"));
+        assertTrue(ex.attributes().containsKey("z"));
+        assertEquals("0.0", ex.attributes().get("z"));
+        assertTrue(ex.attributes().containsKey("Offset (Absolute)"));
+        assertTrue(ex.attributes().containsKey("Offset (Relative)"));
+        assertTrue(ex.attributes().containsKey("URI"));
+        assertTrue(ex.attributes().containsKey("Path"));
       }
     }
   }

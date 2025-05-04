@@ -17,8 +17,10 @@
 
 package com.io7m.jbssio.api;
 
+import com.io7m.seltzer.io.SClosedChannelException;
+
 import java.io.Closeable;
-import java.nio.channels.ClosedChannelException;
+import java.util.Optional;
 
 /**
  * A closeable interface.
@@ -35,14 +37,18 @@ public interface BSSCloseableType extends Closeable
   /**
    * Check if the current object is closed. If it is, raise {@code ClosedChannelException}
    *
-   * @throws ClosedChannelException If the object is closed
+   * @throws SClosedChannelException If the object is closed
    */
 
   default void checkNotClosed()
-    throws ClosedChannelException
+    throws SClosedChannelException
   {
     if (this.isClosed()) {
-      throw new ClosedChannelException();
+      throw new SClosedChannelException(
+        "Channel is closed.",
+        "error-closed",
+        Optional.empty()
+      );
     }
   }
 }

@@ -16,7 +16,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * The base type of byte stream structure writers.
@@ -45,13 +46,13 @@ public interface BSSWriterType
    *
    * @return A new sub writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSWriterType createSubWriterAt(
     String name,
     long offset)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new sub writer with the given {@code name}, using the given {@code offset} (relative
@@ -63,13 +64,13 @@ public interface BSSWriterType
    *
    * @return A new sub writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSWriterType createSubWriterAtBounded(
     String name,
     long offset,
     long size)
-    throws IOException;
+    throws SIOException;
 
 }

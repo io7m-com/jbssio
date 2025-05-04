@@ -1,5 +1,5 @@
 /*
- * Copyright © 2019 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ * Copyright © 2024 Mark Raynsford <code@io7m.com> https://www.io7m.com
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,31 +14,26 @@
  * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-import com.io7m.jbssio.vanilla.BSSReaders;
-import com.io7m.jbssio.vanilla.BSSWriters;
-
 /**
- * Java bitstream structure I/O (Vanilla implementation)
+ * Java bitstream structure I/O (Test suite)
  */
 
-module com.io7m.jbssio.vanilla
+open module com.io7m.jbssio.tests
 {
-  requires static org.osgi.annotation.bundle;
-  requires static org.osgi.annotation.versioning;
-  requires static org.osgi.service.component.annotations;
-
-  requires com.io7m.ieee754b16.core;
   requires com.io7m.jbssio.api;
-  requires com.io7m.seltzer.io;
+  requires com.io7m.jbssio.ext.bounded;
+  requires com.io7m.jbssio.vanilla;
+
   requires org.apache.commons.io;
+  requires org.junit.jupiter.api;
+  requires org.junit.jupiter.engine;
+  requires org.junit.platform.commons;
+  requires org.junit.platform.engine;
+  requires org.junit.platform.launcher;
   requires org.slf4j;
+  requires com.io7m.ieee754b16.core;
   requires com.io7m.seltzer.api;
+  requires com.io7m.seltzer.io;
 
-  provides com.io7m.jbssio.api.BSSReaderProviderType with BSSReaders;
-  provides com.io7m.jbssio.api.BSSWriterProviderType with BSSWriters;
-
-  exports com.io7m.jbssio.vanilla;
-
-  exports com.io7m.jbssio.vanilla.internal
-    to com.io7m.jbssio.tests;
+  exports com.io7m.jbssio.tests;
 }

@@ -16,7 +16,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+import com.io7m.seltzer.io.SIOException;
+
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -38,14 +39,14 @@ public interface BSSWriterProviderType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSWriterSequentialType createWriterFromStream(
     URI uri,
     OutputStream stream,
     String name)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new sequential writer from the given stream.
@@ -57,7 +58,7 @@ public interface BSSWriterProviderType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSWriterSequentialType createWriterFromStreamBounded(
@@ -65,7 +66,7 @@ public interface BSSWriterProviderType
     OutputStream stream,
     String name,
     long size)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new sequential writer from the given stream.
@@ -77,7 +78,7 @@ public interface BSSWriterProviderType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   default BSSWriterSequentialType createWriterFromStream(
@@ -85,7 +86,7 @@ public interface BSSWriterProviderType
     final OutputStream stream,
     final String name,
     final OptionalLong size)
-    throws IOException
+    throws SIOException
   {
     if (size.isPresent()) {
       return this.createWriterFromStreamBounded(
@@ -106,14 +107,14 @@ public interface BSSWriterProviderType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSWriterRandomAccessType createWriterFromByteBuffer(
     URI uri,
     ByteBuffer buffer,
     String name)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new random access writer from the given channel.
@@ -124,14 +125,14 @@ public interface BSSWriterProviderType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSWriterRandomAccessType createWriterFromChannel(
     URI uri,
     SeekableByteChannel channel,
     String name)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new random access writer from the given channel.
@@ -143,7 +144,7 @@ public interface BSSWriterProviderType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   BSSWriterRandomAccessType createWriterFromChannelBounded(
@@ -151,7 +152,7 @@ public interface BSSWriterProviderType
     SeekableByteChannel channel,
     String name,
     long size)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Create a new random access writer from the given channel.
@@ -163,7 +164,7 @@ public interface BSSWriterProviderType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   default BSSWriterRandomAccessType createWriterFromChannel(
@@ -171,7 +172,7 @@ public interface BSSWriterProviderType
     final SeekableByteChannel channel,
     final String name,
     final OptionalLong size)
-    throws IOException
+    throws SIOException
   {
     if (size.isPresent()) {
       return this.createWriterFromChannelBounded(

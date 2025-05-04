@@ -16,7 +16,8 @@
 
 package com.io7m.jbssio.api;
 
-import java.io.IOException;
+
+import com.io7m.seltzer.io.SIOException;
 
 /**
  * The type of purely sequential writers.
@@ -31,12 +32,12 @@ public interface BSSWriterSequentialType extends BSSWriterType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   default BSSWriterSequentialType createSubWriter(
     final String name)
-    throws IOException
+    throws SIOException
   {
     return this.createSubWriterAt(name, this.offsetCurrentRelative());
   }
@@ -49,13 +50,13 @@ public interface BSSWriterSequentialType extends BSSWriterType
    *
    * @return A new writer
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   default BSSWriterSequentialType createSubWriterBounded(
     final String name,
     final long size)
-    throws IOException
+    throws SIOException
   {
     return this.createSubWriterAtBounded(name, this.offsetCurrentRelative(), size);
   }
@@ -64,14 +65,14 @@ public interface BSSWriterSequentialType extends BSSWriterType
   BSSWriterSequentialType createSubWriterAt(
     String name,
     long offset)
-    throws IOException;
+    throws SIOException;
 
   @Override
   BSSWriterSequentialType createSubWriterAtBounded(
     String name,
     long offset,
     long size)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Pad the given output with {@code value} up to the given {@code offset}.
@@ -83,13 +84,13 @@ public interface BSSWriterSequentialType extends BSSWriterType
    *
    * @return The number of bytes written
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   long padTo(
     long offset,
     byte value)
-    throws IOException;
+    throws SIOException;
 
   /**
    * Pad the given output with zeroes up to the given {@code offset}.
@@ -100,12 +101,12 @@ public interface BSSWriterSequentialType extends BSSWriterType
    *
    * @return The number of bytes written
    *
-   * @throws IOException On I/O errors
+   * @throws SIOException On I/O errors
    */
 
   default long padTo(
     final long offset)
-    throws IOException
+    throws SIOException
   {
     return this.padTo(offset, (byte) 0x0);
   }
