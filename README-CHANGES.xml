@@ -61,7 +61,7 @@
         <c:change date="2024-05-09T00:00:00+00:00" summary="Update com.io7m.ieee754b16:com.io7m.ieee754b16.core:3.0.0 → 3.0.1."/>
       </c:changes>
     </c:release>
-    <c:release date="2025-05-04T17:21:08+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="3.0.0">
+    <c:release date="2025-05-04T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jbssio" version="3.0.0">
       <c:changes>
         <c:change date="2024-06-27T00:00:00+00:00" summary="Update com.io7m.junit.version:5.10.2 → 5.10.3."/>
         <c:change compatible="false" date="2024-08-04T00:00:00+00:00" summary="The API now raises structured error exceptions."/>
@@ -91,6 +91,11 @@
         <c:change date="2025-05-01T00:00:00+00:00" summary="Update org.junit:junit-bom:5.12.1 → 5.12.2."/>
         <c:change date="2025-05-01T00:00:00+00:00" summary="Update commons-io:commons-io:2.18.0 → 2.19.0."/>
         <c:change date="2025-05-04T00:00:00+00:00" summary="Publish a com.io7m.jbssio.bom module."/>
+      </c:changes>
+    </c:release>
+    <c:release date="2026-05-01T12:00:49+00:00" is-open="true" ticket-system="com.github.io7m.jbssio" version="4.0.0">
+      <c:changes>
+        <c:change date="2026-05-01T00:00:00+00:00" summary="Add writeByteStream()."/>
       </c:changes>
     </c:release>
   </c:releases>

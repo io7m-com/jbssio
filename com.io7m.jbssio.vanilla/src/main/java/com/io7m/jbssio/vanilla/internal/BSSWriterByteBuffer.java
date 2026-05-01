@@ -24,6 +24,8 @@ import com.io7m.seltzer.io.SClosedChannelException;
 import com.io7m.seltzer.io.SEOFException;
 import com.io7m.seltzer.io.SIOException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -604,6 +606,27 @@ public final class BSSWriterByteBuffer
     this.increaseOffsetRelative(llength);
     this.map.position(longPositionTo2GBLimitedByteBufferPosition(position));
     this.map.put(buffer, offset, length);
+  }
+
+  @Override
+  public void writeByteStream(
+    final InputStream stream)
+    throws SIOException
+  {
+    try {
+      final var buffer = new byte[4096];
+      while (true) {
+        final var r = stream.read(buffer);
+        if (r == -1) {
+          break;
+        }
+        this.writeBytes(buffer, 0, r);
+      }
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to read/write.", Map.of()
+      );
+    }
   }
 
   @Override

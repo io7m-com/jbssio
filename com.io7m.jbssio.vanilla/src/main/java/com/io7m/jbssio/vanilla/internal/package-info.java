@@ -18,4 +18,7 @@
  * Java bitstream structure I/O (Vanilla implementation [Internal classes])
  */
 
+@ProviderType
 package com.io7m.jbssio.vanilla.internal;
+
+import org.osgi.annotation.versioning.ProviderType;

@@ -21,12 +21,29 @@ package com.io7m.jbssio.api;
 import com.io7m.seltzer.io.SEOFException;
 import com.io7m.seltzer.io.SIOException;
 
+import java.io.InputStream;
+
 /**
  * Functions for writing bytes.
  */
 
 public interface BSSWriterBytesType
 {
+  /**
+   * Write bytes from the given stream. The entire stream will be consumed.
+   *
+   * @param stream The stream
+   *
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   *                       writer's limit
+   * @throws SEOFException If EOF is reached
+   *
+   * @since 3.1.0
+   */
+
+  void writeByteStream(InputStream stream)
+    throws SIOException;
+
   /**
    * Write bytes.
    *
@@ -36,7 +53,7 @@ public interface BSSWriterBytesType
    * @param buffer The byte buffer value
    *
    * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
-   *                      writer's limit
+   *                       writer's limit
    * @throws SEOFException If EOF is reached
    */
 
@@ -56,7 +73,7 @@ public interface BSSWriterBytesType
    * @param length The number of bytes to write
    *
    * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
-   *                      writer's limit
+   *                       writer's limit
    * @throws SEOFException If EOF is reached
    */
 
@@ -75,7 +92,7 @@ public interface BSSWriterBytesType
    * @param buffer The byte buffer value
    *
    * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
-   *                      writer's limit
+   *                       writer's limit
    * @throws SEOFException If EOF is reached
    */
 
@@ -93,7 +110,7 @@ public interface BSSWriterBytesType
    * @param length The number of bytes to write
    *
    * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
-   *                      writer's limit
+   *                       writer's limit
    * @throws SEOFException If EOF is reached
    */
 

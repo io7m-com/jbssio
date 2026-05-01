@@ -18,9 +18,11 @@
  * Java bitstream structure I/O (Vanilla implementation)
  */
 
+@ProviderType
 @Export
-@Version("1.0.0")
+@Version("2.0.0")
 package com.io7m.jbssio.vanilla;
 
 import org.osgi.annotation.bundle.Export;
+import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.annotation.versioning.Version;

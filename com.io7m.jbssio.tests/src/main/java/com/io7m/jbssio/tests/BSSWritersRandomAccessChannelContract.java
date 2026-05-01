@@ -20,6 +20,7 @@ import com.io7m.ieee754b16.Binary16;
 import com.io7m.jbssio.api.BSSWriterRandomAccessType;
 import com.io7m.jbssio.vanilla.BSSReaders;
 import com.io7m.seltzer.io.SIOException;
+import org.apache.commons.io.input.BrokenInputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -27,14 +28,18 @@ import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.Channel;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class BSSWritersRandomAccessChannelContract<T extends Channel>
@@ -480,6 +485,52 @@ public abstract class BSSWritersRandomAccessChannelContract<T extends Channel>
         'C', 'C', 'C', 'C',
         'D', 'D', 'D', 'D'
       }, this.writtenDataOf(data));
+    }
+  }
+
+  @Test
+  public void testWriteInputStream()
+    throws Exception
+  {
+    final var rng =
+      SecureRandom.getInstanceStrong();
+    final var streamData =
+      new byte[(int) (4096.0 * 3.5)];
+
+    rng.nextBytes(streamData);
+
+    final var data =
+      new byte[4096 * 4];
+
+    try (var channel = this.channelOf(data)) {
+      try (var writer = this.writerOf(channel)) {
+        writer.writeByteStream(new ByteArrayInputStream(streamData));
+      }
+
+      final var written = this.writtenDataOf(data);
+      Assertions.assertArrayEquals(
+        streamData,
+        Arrays.copyOfRange(written, 0, streamData.length)
+      );
+    }
+  }
+
+  @Test
+  public void testWriteInputStreamFails()
+    throws Exception
+  {
+    final var data =
+      new byte[4096 * 4];
+
+    try (var channel = this.channelOf(data)) {
+      try (var writer = this.writerOf(channel)) {
+        assertThrows(
+          SIOException.class,
+          () -> {
+            writer.writeByteStream(new BrokenInputStream());
+          }
+        );
+      }
     }
   }
 
