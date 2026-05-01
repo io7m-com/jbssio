@@ -20,6 +20,7 @@ import com.io7m.ieee754b16.Binary16;
 import com.io7m.jbssio.api.BSSWriterRandomAccessType;
 import com.io7m.jbssio.vanilla.BSSReaders;
 import com.io7m.seltzer.io.SIOException;
+import org.apache.commons.io.channels.ByteArraySeekableByteChannel;
 import org.apache.commons.io.input.BrokenInputStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -531,6 +532,33 @@ public abstract class BSSWritersRandomAccessChannelContract<T extends Channel>
           }
         );
       }
+    }
+  }
+
+  @Test
+  public void testWriteInputChannel()
+    throws Exception
+  {
+    final var rng =
+      SecureRandom.getInstanceStrong();
+    final var streamData =
+      new byte[(int) (4096.0 * 3.5)];
+
+    rng.nextBytes(streamData);
+
+    final var data =
+      new byte[4096 * 4];
+
+    try (var channel = this.channelOf(data)) {
+      try (var writer = this.writerOf(channel)) {
+        writer.writeByteChannel(ByteArraySeekableByteChannel.wrap(streamData));
+      }
+
+      final var written = this.writtenDataOf(data);
+      Assertions.assertArrayEquals(
+        streamData,
+        Arrays.copyOfRange(written, 0, streamData.length)
+      );
     }
   }
 

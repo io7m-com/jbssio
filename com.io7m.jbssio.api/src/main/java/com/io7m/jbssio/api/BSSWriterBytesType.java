@@ -22,6 +22,7 @@ import com.io7m.seltzer.io.SEOFException;
 import com.io7m.seltzer.io.SIOException;
 
 import java.io.InputStream;
+import java.nio.channels.ReadableByteChannel;
 
 /**
  * Functions for writing bytes.
@@ -38,10 +39,25 @@ public interface BSSWriterBytesType
    *                       writer's limit
    * @throws SEOFException If EOF is reached
    *
-   * @since 3.1.0
+   * @since 4.0.0
    */
 
   void writeByteStream(InputStream stream)
+    throws SIOException;
+
+  /**
+   * Write bytes from the given channel. The entire channel will be consumed.
+   *
+   * @param channel The channel
+   *
+   * @throws SIOException  On I/O errors, or if an attempt is made to seek or write beyond the
+   *                       writer's limit
+   * @throws SEOFException If EOF is reached
+   *
+   * @since 4.0.0
+   */
+
+  void writeByteChannel(ReadableByteChannel channel)
     throws SIOException;
 
   /**

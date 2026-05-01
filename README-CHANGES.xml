@@ -93,9 +93,10 @@
         <c:change date="2025-05-04T00:00:00+00:00" summary="Publish a com.io7m.jbssio.bom module."/>
       </c:changes>
     </c:release>
-    <c:release date="2026-05-01T12:00:49+00:00" is-open="true" ticket-system="com.github.io7m.jbssio" version="4.0.0">
+    <c:release date="2026-05-01T12:14:36+00:00" is-open="true" ticket-system="com.github.io7m.jbssio" version="4.0.0">
       <c:changes>
         <c:change date="2026-05-01T00:00:00+00:00" summary="Add writeByteStream()."/>
+        <c:change date="2026-05-01T12:14:36+00:00" summary="Add writeByteChannel()."/>
       </c:changes>
     </c:release>
   </c:releases>

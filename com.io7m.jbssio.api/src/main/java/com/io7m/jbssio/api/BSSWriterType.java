@@ -34,7 +34,8 @@ public interface BSSWriterType
   BSSSkippableType,
   BSSWriterFloatType,
   BSSWriterIntegerUnsignedType,
-  BSSWriterIntegerSignedType, BSSWriterBytesType
+  BSSWriterIntegerSignedType,
+  BSSWriterBytesType
 {
   /**
    * Create a new sub writer with the given {@code name}, using the given {@code offset} (relative

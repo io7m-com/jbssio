@@ -29,6 +29,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -627,6 +629,14 @@ public final class BSSWriterByteBuffer
         this, e, "Failed to read/write.", Map.of()
       );
     }
+  }
+
+  @Override
+  public void writeByteChannel(
+    final ReadableByteChannel inputChannel)
+    throws SIOException
+  {
+    this.writeByteStream(Channels.newInputStream(inputChannel));
   }
 
   @Override
