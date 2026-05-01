@@ -23,9 +23,12 @@ import com.io7m.seltzer.api.SStructuredErrorType;
 import com.io7m.seltzer.io.SIOException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.util.Map;
 import java.util.Objects;
@@ -668,6 +671,35 @@ public final class BSSWriterSeekableChannel
         );
       }
     }
+  }
+
+  @Override
+  public void writeByteStream(
+    final InputStream stream)
+    throws SIOException
+  {
+    try {
+      final var buffer = new byte[4096];
+      while (true) {
+        final var r = stream.read(buffer);
+        if (r == -1) {
+          break;
+        }
+        this.writeBytes(buffer, 0, r);
+      }
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to read/write.", Map.of()
+      );
+    }
+  }
+
+  @Override
+  public void writeByteChannel(
+    final ReadableByteChannel inputChannel)
+    throws SIOException
+  {
+    this.writeByteStream(Channels.newInputStream(inputChannel));
   }
 
   @Override

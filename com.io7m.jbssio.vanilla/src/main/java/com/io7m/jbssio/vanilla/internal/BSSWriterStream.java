@@ -27,10 +27,13 @@ import org.apache.commons.io.output.CountingOutputStream;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -673,6 +676,35 @@ public final class BSSWriterStream implements BSSWriterSequentialType
         this, e, "Failed to write to stream.", Map.of()
       );
     }
+  }
+
+  @Override
+  public void writeByteStream(
+    final InputStream inputStream)
+    throws SIOException
+  {
+    try {
+      final var buffer = new byte[4906];
+      while (true) {
+        final var r = inputStream.read(buffer);
+        if (r == -1) {
+          break;
+        }
+        this.writeBytes(buffer, 0, r);
+      }
+    } catch (final IOException e) {
+      throw BSSExceptions.wrap(
+        this, e, "Failed to read/write.", Map.of()
+      );
+    }
+  }
+
+  @Override
+  public void writeByteChannel(
+    final ReadableByteChannel inputChannel)
+    throws SIOException
+  {
+    this.writeByteStream(Channels.newInputStream(inputChannel));
   }
 
   @Override

@@ -18,9 +18,11 @@
  * Java bitstream structure I/O (Bounded extensions).
  */
 
+@ProviderType
 @Export
-@Version("1.0.0")
+@Version("1.0.1")
 package com.io7m.jbssio.ext.bounded;
 
 import org.osgi.annotation.bundle.Export;
+import org.osgi.annotation.versioning.ProviderType;
 import org.osgi.annotation.versioning.Version;

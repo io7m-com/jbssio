@@ -20,7 +20,9 @@ import com.io7m.seltzer.api.SStructuredErrorType;
 import com.io7m.seltzer.io.SEOFException;
 import com.io7m.seltzer.io.SIOException;
 
+import java.io.InputStream;
 import java.net.URI;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Map;
 import java.util.OptionalLong;
 
@@ -89,6 +91,20 @@ public final class BSSWriterRandomAccessUnsupported
   @Override
   public OptionalLong bytesRemaining()
     throws SIOException
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void writeByteStream(
+    final InputStream stream)
+  {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void writeByteChannel(
+    final ReadableByteChannel channel)
   {
     throw new UnsupportedOperationException();
   }
