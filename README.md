@@ -1,12 +1,171 @@
-ERROR com.io7m.ghrepostools.Main : The specified command does not exist.
-  Command    : README
-  Error Code : command-nonexistent
+jbssio
+===
 
-DEBUG com.io7m.ghrepostools.Main : Exception: 
-com.io7m.quarrel.core.QException: The specified command does not exist.
-	at com.io7m.quarrel.core.QApplication.parseExpanded(QApplication.java:244)
-	at com.io7m.quarrel.core.QApplication.parse(QApplication.java:152)
-	at com.io7m.quarrel.core.QApplicationType.run(QApplicationType.java:94)
-	at com.io7m.ghrepostools.Main.run(Main.java:126)
-	at com.io7m.ghrepostools.Main.mainExitless(Main.java:110)
-	at com.io7m.ghrepostools.Main.main(Main.java:95)
+[![Maven Central](https://img.shields.io/maven-central/v/com.io7m.jbssio/com.io7m.jbssio.svg?style=flat-square)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.io7m.jbssio%22)
+[![Maven Central (snapshot)](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Fcentral.sonatype.com%2Frepository%2Fmaven-snapshots%2Fcom%2Fio7m%2Fjbssio%2Fcom.io7m.jbssio%2Fmaven-metadata.xml&style=flat-square)](https://central.sonatype.com/repository/maven-snapshots/com/io7m/jbssio/)
+[![Codecov](https://img.shields.io/codecov/c/github/io7m-com/jbssio.svg?style=flat-square)](https://codecov.io/gh/io7m-com/jbssio)
+![Java Version](https://img.shields.io/badge/17-java?label=java&color=e65cc3)
+
+![com.io7m.jbssio](./src/site/resources/jbssio.jpg?raw=true)
+
+| JVM | Platform | Status |
+|-----|----------|--------|
+| OpenJDK (Temurin) Current | Linux | [![Build (OpenJDK (Temurin) Current, Linux)](https://img.shields.io/github/actions/workflow/status/io7m-com/jbssio/main.linux.temurin.current.yml)](https://www.github.com/io7m-com/jbssio/actions?query=workflow%3Amain.linux.temurin.current)|
+| OpenJDK (Temurin) LTS | Linux | [![Build (OpenJDK (Temurin) LTS, Linux)](https://img.shields.io/github/actions/workflow/status/io7m-com/jbssio/main.linux.temurin.lts.yml)](https://www.github.com/io7m-com/jbssio/actions?query=workflow%3Amain.linux.temurin.lts)|
+| OpenJDK (Temurin) Current | Windows | [![Build (OpenJDK (Temurin) Current, Windows)](https://img.shields.io/github/actions/workflow/status/io7m-com/jbssio/main.windows.temurin.current.yml)](https://www.github.com/io7m-com/jbssio/actions?query=workflow%3Amain.windows.temurin.current)|
+| OpenJDK (Temurin) LTS | Windows | [![Build (OpenJDK (Temurin) LTS, Windows)](https://img.shields.io/github/actions/workflow/status/io7m-com/jbssio/main.windows.temurin.lts.yml)](https://www.github.com/io7m-com/jbssio/actions?query=workflow%3Amain.windows.temurin.lts)|
+
+## Repository Relocation
+
+Development of this project has moved to an
+[open-source but not open-contribution](https://sqlite.org/copyright.html#notopencontrib)
+model.
+
+Source code and commits will remain publicly available perpetually, but issues
+and/or pull requests will be rejected and/or ignored. Additionally, this project
+will now only be available via a read-only mirror at:
+
+  https://codeberg.org/io7m-com/jbssio
+
+
+## jbssio
+
+The `jbssio` package implements a set of types and functions for efficient,
+structural binary I/O.
+
+## Features
+
+* Efficient binary I/O over streams, channels, and byte buffers.
+* Nested, bounded stream abstraction to increase readability of code and
+  improve diagnostic information.
+* High coverage test suite.
+* [OSGi-ready](https://www.osgi.org/)
+* [JPMS-ready](https://en.wikipedia.org/wiki/Java_Platform_Module_System)
+* ISC license.
+
+## Usage
+
+The `jbssio` package provides imperative _reader_ and _writer_
+abstractions. Readers and writers may be _sequential_, meaning that
+they encapsulate a _stream_ in which only forward seeking is allowed,
+or _random access_, meaning that they encapsulate a resource that
+allows for arbitrary forwards and backwards seeking. The API attempts, as
+much as is possible, to present a common API for both _sequential_
+and _random access_ so that code using _readers_ and _writers_
+can potentially be agnostic of the seekability of the underlying resources.
+Current implementations can encapsulate:
+
+* `java.io.OutputStream`
+* `java.io.InputStream`
+* `java.nio.channels.SeekableByteChannel`
+* `java.nio.ByteBuffer`
+
+_Readers_ and _writers_ are explicitly _nested_: All
+offsets/positions of _readers_ and _writers_ are given relative
+to their _parent_. A _reader_ or _writer_ with no parent
+effectively works with _absolute_ positions within an encapsulated
+resource. _Readers_ and _writers_ may be given explicit _bounds_
+to limit the region of the resource from which they may read or write.
+Bounds, combined with nesting, allow for very easy-to-understand code
+when parsing complex binary structures. Individual _readers_ and
+_writers_ are assigned names as they are created, and these names are
+appended together during nesting to construct detailed diagnostic messages
+when errors occur. All exceptions raised by the API are
+[structured errors](https://www.io7m.com/software/seltzer/):
+
+```
+com.io7m.seltzer.io.SIOException: Out of bounds.
+  Reader URI: file://tmp/example.data
+  Reader path: header/info:size
+  Reader bounds: absolute [0x0, 0x10)
+  Target offset: absolute 0x16
+  Offset: absolute 0x0
+```
+
+The above error clearly indicates that the code that was attempting
+to read the `size` field, of the `info` member of the
+`header` structure, ended up trying to read more data than the
+_reader_ was configured to allow: The _reader_ was specified
+to be allowed to read within the bounds `[0x0, 0x10)` but the code
+tried to read beyond these bounds. Note that _readers_ and _writers_
+do _not_ know anything about the actual binary structures being parsed;
+the programmer specifies names that correspond to the structures that the
+programmer is trying to parse, and the _reader_ and _writer_
+implementations use these names in an attempt to construct useful
+diagnostics.
+
+_Readers_ and _writers_ operate on their underlying resources
+using simple, explicit read/write methods. For example, the `readU32BE`
+method defined for _readers_ reads a single, unsigned, big-endian,
+32-bit integer from the current position. Methods exist for all of the
+common machine types. Additionally, _readers_ and _writers_
+contain convenient methods for aligning data, and for reading arbitrary byte
+sequences. Calls to _reader_ or _writer_ methods advance the
+current position of the _reader_ or _writer_.
+
+### Reading Data
+
+Retrieve a `BSSReaderType` and use it to read data:
+
+```
+ServiceLoader.load(BSSReaderProviderType.class)
+  .findFirst()
+  .orElseThrow(() -> new IllegalStateException("No reader service available"));
+
+try (var channel = Files.newByteChannel(path, READ)) {
+  // Create an unbounded reader that will read from the start of the channel
+  try (var reader = readers.createReaderFromChannel(pathURI, channel, "root")) {
+
+    // Create a reader that is permitted to read [0, 8) relative to "reader"
+    try (var sr = reader.createSubReaderAtBounded("head", 0L, 8L)) {
+      var x = sr.readS32BE();
+      var y = sr.readS32BE();
+    }
+
+    // Create a reader that is permitted to read [8, 16) relative to "reader"
+    try (var sr = reader.createSubReaderAtBounded("body", 8L, 16L)) {
+      var a = sr.readS32BE();
+      var b = sr.readS32BE();
+      var c = sr.readS32BE();
+      var d = sr.readS32BE();
+    }
+  }
+}
+```
+
+Using `ServiceLoader` is _not_ required: The
+various providers in the `jbssio` package can
+be used via `ServiceLoader`, via OSGi declarative
+services, or simply instantiated manually. See the JavaDoc.
+
+### Writing Data
+
+Retrieve a `BSSWriterType` and use it to write data:
+
+```
+final var readers =
+  ServiceLoader.load(BSSWriterProviderType.class)
+    .findFirst()
+    .orElseThrow(() -> new IllegalStateException("No writer service available"));
+
+try (var channel = Files.newByteChannel(path, WRITE, CREATE)) {
+  // Create an unbounded writer that will write from the start of the channel
+  try (var writer = writers.createWriterFromChannel(pathURI, channel, "root")) {
+
+    // Create a writer that is permitted to write [0, 8) relative to "writer"
+    try (var sw = writer.createSubWriterAtBounded("head", 0L, 8L)) {
+      sw.writeS32BE(0x10203040L);
+      sw.writeS32BE(0x50607080L);
+    }
+
+    // Create a writer that is permitted to write [8, 16) relative to "writer"
+    try (var sw = writer.createSubWriterAtBounded("body", 8L, 16L)) {
+      sw.writeS32BE(0x90909090L);
+      sw.writeS32BE(0x80808080L);
+      sw.writeS32BE(0xa0a0a0a0L);
+      sw.writeS32BE(0xb0b0b0b0L);
+    }
+  }
+}
+```
+
